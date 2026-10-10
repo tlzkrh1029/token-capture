@@ -31,6 +31,7 @@ scripts/backtest.py        과거 시점 T 재구성 + 스피어만 순위상관
 scripts/audit_chart.py     일별 시계열로 저장값 점검 (보완 문서 2절)
 scripts/seed_snapshots.py  직전 스냅샷 재생성 (보완 문서 3절)
 tests/test_score.py        score.py ↔ score_reference.py 일치 검증
+tests/fixtures/universe-2026-10-09.json  동봉 universe.json 의 고정본. 참조 검증·테스트·시드 재생성의 기준
 data/universe.json         추적 대상 46종목 정의와 산출식 상수 (단일 기준)
 data/raw/                  수집 원본 (감사용, 그대로 보존)
 data/snapshots/            채점 결과 {date, rows}  (아티팩트 행 형식)
@@ -70,7 +71,7 @@ adj = net                                        (net < 0, 계수 미적용 — 
 - `total30d` 가 `null` 로 오면(응답은 200) 수집 실패로 센다. 0 으로 바꾸지 않는다. 2026-10-10 기준 DODO 가 그렇다(어댑터 기록이 2026-08-29 에서 끝남).
 - 가격 순서: ① `coins.llama.fi/prices/current/coingecko:<cg>` (25개씩) → ② 빠진 종목은 DefiLlama 응답의 컨트랙트 주소로 `coins.llama.fi` 재조회 → ③ 그래도 없으면 CoinGecko `simple/price` 같은 id. 환경변수 `COINGECKO_API_KEY` 가 있으면 데모 키 헤더(`x-cg-demo-api-key`)로 보낸다. 키는 코드나 커밋에 넣지 않고 저장소 Secrets 에만 둔다.
 - 종료 조건: hr30 실패가 전체의 10% 초과 또는 가격 실패 3개 초과 → raw 파일을 쓴 뒤 `exit 1`. 워크플로가 실패로 끝나고 GitHub 가 이메일을 보낸다.
-- 실패 종목은 score.py 가 직전 스냅샷 값을 쓰고 `carried: true`, `carried_fields` 를 넣는다. 같은 필드가 2주 연속 실패하면 행을 만들지 않고 `latest.json` 의 `meta.failures` 에 남긴다.
+- 실패 종목은 score.py 가 직전 스냅샷 값을 쓰고 `carried: true`, `carried_fields` 를 넣는다. 같은 필드가 2주 연속 실패하면 행을 만들지 않고 `latest.json` 의 `meta.failures` 에 남긴다. "2주 연속"은 직전 스냅샷이 7일 이상 전일 때만 성립하며, 같은 주의 재실행(하루 이틀 뒤 수동 실행)은 같은 실패로 보고 다시 carried 로 둔다.
 - `inc_qty30` 이 있는 종목(NEAR, VVV)은 매주 `inc30 = inc_qty30 × 그날 가격 ÷ 1e6` 으로 다시 계산하고 `universe.json` 의 `inc30`, `inc_ref_price`, `inc_ref_date`, `updated` 를 갱신해 함께 커밋한다.
 - `stale_suspect`: 수집에 성공했는데 hr30·hr7 이 직전 스냅샷과 정확히 같으면 표시한다(둘 다 0 인 "실현 0" 행은 제외). 주기형 목록 종목은 정상이어도 같을 수 있다. 워크플로는 실패시키지 않는다.
 
@@ -79,15 +80,17 @@ adj = net                                        (net < 0, 계수 미적용 — 
 ### 로컬 검증
 
 ```
-python scripts/score_reference.py --selftest --universe data/universe.json   # SELFTEST PASS 여야 한다
-python -m unittest discover -s tests -v                                       # score.py 가 참조 구현과 일치하는지
+python scripts/score_reference.py --selftest --universe tests/fixtures/universe-2026-10-09.json   # SELFTEST PASS 여야 한다
+python -m unittest discover -s tests -v                                                           # score.py 가 참조 구현과 일치하는지
 python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026-10-10
 ```
+
+참조 검증과 테스트는 `data/universe.json` 이 아니라 고정본 `tests/fixtures/universe-2026-10-09.json` 을 쓴다. `data/universe.json` 은 매주 NEAR·VVV 의 `inc30` 이 다시 쓰이므로 2026-09-17·09-19 저장값을 재현하는 기준이 될 수 없다.
 
 ### 첫 실행 검증 (14장)
 
 1. Actions 탭에서 `tokencapture-weekly` 를 **Run workflow** 로 수동 실행한다.
-2. 로그: `귀속액 성공 N/46`, `가격 성공 46/46`, 실패 목록, 등급 변동 목록. 행 수는 46 이어야 한다(보완 문서 1절. STONK 는 CoinGecko id 가 `stonk-3` 으로 바뀌어 이제 `coins.llama.fi` 에서 가격이 나온다).
+2. 로그: `귀속액 성공 N/46`, `가격 성공 46/46`, 실패 목록, 등급 변동 목록. 행 수는 46 이어야 한다(보완 문서 1절. STONK 는 CoinGecko id 가 `stonk-3` 으로 바뀌어 이제 `coins.llama.fi` 에서 가격이 나온다). 2026-10-10 기준 DODO 는 `total30d` 가 `null` 이라 직전 값을 쓴 `carried` 행으로 들어간다. 이 상태가 직전 스냅샷보다 7일 이상 지난 실행에서도 이어지면 그때는 DODO 가 빠져 45행이 되고 `meta.failures` 에 "2주 연속 실패"로 남는다.
 3. `data/snapshots/<오늘>.json` 의 행 수 46, 필드 전부 존재, `rows[0]` 이 `adj` 최댓값.
 4. 값 대조: NEAR `hr30` 은 백만 달러대(`near-intents`)여야 하고 수만 달러대면 체인 slug 를 잘못 쓴 것이다. 음수 종목(ETH, CRV, SOL, CC, VELO, VVV, NEAR 등)은 `adj` 와 `net` 이 같아야 한다.
 5. 브리지 작업을 한 번 수동 발사해 아티팩트 저장소에 새 문서가 생기는지 본다. 첫 실행에서는 `meta/universe` 가 version 5 로 갱신되어야 한다(3-2절 불일치 해소).
@@ -109,13 +112,13 @@ python scripts/backtest.py --T 2026-06-17   # 한 시점만
 ```
 
 창 정의: DefiLlama 의 `total30d` 는 기준일을 제외한 직전 30일 합계다(`audit_chart.py` 로 2026-10-10 확인). 백테스트도 같은 창을 쓴다.
-T 이후 구조가 바뀐 종목은 `backtest.py` 의 `STRUCTURE` 표로 T 시점 기준으로 되돌리거나 제외한다. 결과와 판정(성장 계수 채택 여부 등)은 `data/backtest/summary.md` 에 있다.
+T 이후 구조가 바뀐 종목은 `backtest.py` 의 `STRUCTURE` 표로 T 시점 기준으로 되돌리거나 제외한다(`hist_k` 는 달력 개월 수로 다시 계산). `inc_qty30` 이 있는 NEAR·VVV 의 배출액은 수량 × T 시점 가격으로 환산하고, 나머지 배출액은 현재 달러값이라 근사다. 순위상관은 반올림하지 않은 값으로 계산한다. 결과와 판정(성장 계수 채택 여부 등)은 `data/backtest/summary.md` 에 있다.
 
 ### 점검 도구
 
 ```
 python scripts/audit_chart.py --asof 2026-09-19     # 8종목의 일별 기록 양상과 저장값 대조 (보고만, 수정하지 않음)
-python scripts/seed_snapshots.py                    # 2026-09-17·09-19 스냅샷 재생성 (seeded: true)
+python scripts/seed_snapshots.py --force            # 2026-09-17·09-19 스냅샷 재생성 (seeded: true). 고정본 universe 를 쓴다
 ```
 
 ## 인계 문서와 다르게 한 것

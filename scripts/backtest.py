@@ -14,7 +14,9 @@ T 시점 재구성
   * mc_T = price_T × circ(현재 값). 유통량은 현재 값을 그대로 쓰므로 근사다.
   * fdv, acc, auto, hist_k 는 현재 universe.json 값을 쓴다. 단 T 이후 구조가 바뀐 종목은 STRUCTURE 표(아래)로
     T 시점 기준으로 되돌리거나 제외한다. 판별 규칙은 STRUCTURE 의 주석에 있다.
-  * inc30 은 현재 값(달러 고정)이라 T 시점과 다르다. 배출액이 있는 종목에 한해 근사라는 점을 출력에 적는다.
+  * inc30 은 현재 값(달러 고정)이라 T 시점과 다르다. inc_qty30 이 있는 NEAR·VVV 만 수량 × T 시점 가격으로 환산한다(6-4절).
+    배출액이 있는 종목에 한해 근사라는 점을 출력에 적는다.
+  * hist_k 의 T 시점 재계산은 달력 개월 수(정수)로 한다. 순위상관은 반올림하지 않은 값으로 계산한다.
 출력(JSON 과 표준 출력)
   * 종목별 adj_T, grade_T, return, BTC 대비 초과수익
   * ρ(adj_T, return), ρ(adj_T, 초과수익), 표본 수, p값(scipy 가 있으면 scipy, 없으면 순열검정 1,000회)
@@ -211,7 +213,11 @@ def spearman(x, y, perms=1000, seed=0):
 # T 시점 재구성
 # ---------------------------------------------------------------------------
 def months_between(a, b):
-    return (b - a).days / 30.4375
+    """a 부터 b 까지 지난 달력 개월 수(정수). 같은 날짜면 한 달로 센다(예: 04-01 → 07-01 = 3개월)."""
+    m = (b.year - a.year) * 12 + (b.month - a.month)
+    if b.day < a.day:
+        m -= 1
+    return m
 
 
 def reconstruct(universe, charts, prices_T, prices_TH, T, H, chart_failures):
@@ -237,7 +243,7 @@ def reconstruct(universe, charts, prices_T, prices_TH, T, H, chart_failures):
             m = months_between(start, T)
             hk = hist_k_from_months(m)
             if hk != tok["hist_k"]:
-                notes.append(f"hist_k {tok['hist_k']}→{hk} (T 시점 {m:.1f}개월)")
+                notes.append(f"hist_k {tok['hist_k']}→{hk} (T 시점 {m}개월)")
             tok_T["hist_k"] = hk
         if st.get("stop"):
             stop = C.parse_date(st["stop"])
@@ -262,32 +268,45 @@ def reconstruct(universe, charts, prices_T, prices_TH, T, H, chart_failures):
         if not pT or not pTH:
             excluded.append({"t": sym, "reason": f"가격 없음 (T:{'있음' if pT else '없음'}, T+H:{'있음' if pTH else '없음'})"})
             continue
+        # inc_qty30 이 있는 종목(NEAR, VVV)은 6-4절과 같이 수량 × T 시점 가격으로 배출액을 환산한다. 나머지는 현재 달러 고정값.
+        if tok_T.get("inc_qty30") is not None:
+            tok_T["inc30"] = round(tok_T["inc_qty30"] * pT / 1e6, 3)
+            notes.append(f"inc30 {tok.get('inc30')}→{tok_T['inc30']} (inc_qty30 × T 시점 가격)")
         row = S.score_one(tok_T, pT, hr30, hr7, k_acc, k_auto, lumpy, bands)
         kprod = row["k"]["acc"] * row["k"]["auto"] * row["k"]["stab"] * row["k"]["dil"] * row["k"]["hist"]
         inc = tok_T.get("inc30")
-        mc = row["mc"]
+        # 통계는 반올림하지 않은 값으로 낸다(반올림하면 가짜 동순위가 생긴다). 행에는 반올림한 값을 적는다.
+        mc = pT * tok_T["circ"] / 1e6
+        raw_x = (hr30 / 1e6) / mc * 100 * C.ANN
+        net_x = ((hr30 / 1e6) - (inc if inc is not None else 0.0)) / mc * 100 * C.ANN
+        adj_x = net_x if net_x < 0 else net_x * kprod
         adj1 = ((hr30 / 1e6) * kprod - (inc or 0.0)) / mc * 100 * C.ANN           # ①안
         g = (hr30 / (hr1y / C.ANN)) if hr1y and n1y >= 30 else None
         kg = k_growth_of(g)
-        adj_g = row["adj"] * kg if row["net"] >= 0 else row["adj"]
+        adj_g = adj_x * kg if net_x >= 0 else adj_x
         ret = pTH / pT - 1
+        exc = (ret - btc_ret) if btc_ret is not None else None
         rows.append({
             "t": sym, "slug": tok["slug"], "acc": tok_T["acc"], "auto": tok_T["auto"],
-            "price_T": pT, "price_TH": pTH, "mc_T": mc,
+            "price_T": pT, "price_TH": pTH,
+            "price_T_ts": (prices_T.get(key) or {}).get("timestamp"), "price_TH_ts": (prices_TH.get(key) or {}).get("timestamp"),
+            "mc_T": round(mc, 3),
             "hr30_T": round(hr30, 2), "hr7_T": round(hr7, 2), "hr1y_T": round(hr1y, 2), "n30": n30, "n1y": n1y,
-            "rr_T": row["rr"], "raw_T": row["raw"], "net_T": row["net"], "adj_T": row["adj"], "grade_T": row["g"],
+            "rr_T": row["rr"], "raw_T": round(raw_x, 3), "net_T": round(net_x, 3), "adj_T": round(adj_x, 3), "grade_T": row["g"],
             "adj1_T": round(adj1, 3), "growth_T": (round(g, 3) if g is not None else None), "k_growth": kg,
-            "adj_growth_T": round(adj_g, 3), "k": row["k"], "inc30_now": inc, "simple_T": round(hr30 / 1e6 / mc, 6),
-            "return": round(ret, 4), "excess": (round(ret - btc_ret, 4) if btc_ret is not None else None),
+            "adj_growth_T": round(adj_g, 3), "k": row["k"], "inc30_T": inc, "simple_T": round(hr30 / 1e6 / mc, 6),
+            "return": round(ret, 4), "excess": (round(exc, 4) if exc is not None else None),
             "notes": notes,
+            "_exact": {"adj_T": adj_x, "raw_T": raw_x, "net_T": net_x, "adj1_T": adj1, "adj_growth_T": adj_g,
+                       "simple_T": hr30 / 1e6 / mc, "return": ret, "excess": exc},
         })
-    rows.sort(key=lambda r: -r["adj_T"])
+    rows.sort(key=lambda r: -r["_exact"]["adj_T"])
     return rows, excluded, warnings, btc_ret
 
 
 def summarize(rows):
     def col(k):
-        return [r[k] for r in rows]
+        return [r["_exact"][k] for r in rows]
     stats = {
         "adj_vs_return": spearman(col("adj_T"), col("return")),
         "adj_vs_excess": spearman(col("adj_T"), col("excess")),
@@ -329,7 +348,9 @@ def run_one(universe, charts, chart_failures, T_str, H, cache_dir=None):
     prices_TH = fetch_historical_prices(keys, TH)
     rows, excluded, warnings, btc_ret = reconstruct(universe, charts, prices_T, prices_TH, T, H, chart_failures)
     stats, by_grade = summarize(rows)
-    inc_syms = [r["t"] for r in rows if r["inc30_now"] is not None]
+    inc_syms = [r["t"] for r in rows if r["inc30_T"] is not None]
+    for r in rows:
+        r.pop("_exact", None)
     result = {
         "T": T_str, "H": H, "T_plus_H": TH.isoformat(), "generated": C.now_utc_iso(),
         "btc_return": (round(btc_ret, 4) if btc_ret is not None else None),
@@ -337,14 +358,18 @@ def run_one(universe, charts, chart_failures, T_str, H, cache_dir=None):
             "hr30_T·hr7_T·hr1y_T 는 totalDataChart 에서 기준일 T 를 제외한 직전 30·7·365일 합계(DefiLlama total30d 창 정의와 동일)",
             "mc_T = price_T × 현재 유통량(circ). 유통량은 T 시점 값이 아니라 현재 값이므로 근사",
             "fdv·acc·auto·hist_k 는 현재 universe.json 값. STRUCTURE 표의 종목만 T 시점 기준으로 되돌리거나 제외",
-            f"inc30 은 현재 값(달러 고정)이라 T 시점과 다르다. 배출액이 있는 {len(inc_syms)}종목({', '.join(inc_syms)})의 net_T·adj_T·adj1_T 는 근사",
+            f"inc30 은 현재 값(달러 고정)이라 T 시점과 다르다(inc_qty30 이 있는 NEAR·VVV 만 수량 × T 시점 가격으로 환산). 배출액이 있는 {len(inc_syms)}종목({', '.join(inc_syms)})의 net_T·adj_T·adj1_T 는 근사",
             "①안 adj1_T = (hr30_T/1e6 × 계수곱 − inc30) ÷ mc_T × 100 × ANN. ②안(현행) adj_T 는 net<0 이면 계수 미적용",
-            "raw_T 와 hr30_T/mc_T 단순비율은 서로 단조 변환이므로 순위상관이 같다",
+            "raw_T 와 hr30_T/mc_T 단순비율은 서로 단조 변환이므로 순위상관이 같다. 순위상관은 반올림하지 않은 값으로 계산한다",
             "p값은 scipy 가 없으면 고정 시드 순열검정 1,000회",
         ],
         "rows": rows, "excluded": excluded, "warnings": warnings, "stats": stats, "by_grade": by_grade,
     }
     return result
+
+
+def fmt_pct(x):
+    return "n/a" if x is None else f"{x:+.1%}"
 
 
 def fmt_rho(s):
@@ -354,13 +379,13 @@ def fmt_rho(s):
 
 
 def print_result(res):
-    C.log(f"=== 백테스트 T={res['T']} H={res['H']}일 (T+H={res['T_plus_H']}) BTC 수익률 {res['btc_return']}")
+    C.log(f"=== 백테스트 T={res['T']} H={res['H']}일 (T+H={res['T_plus_H']}) BTC 수익률 {fmt_pct(res['btc_return'])}")
     C.log(f"{'종목':7}{'등급':>4}{'adj_T':>8}{'net_T':>8}{'raw_T':>8}{'①adj1':>8}{'g_T':>6}{'수익률':>9}{'초과':>9}  비고")
     for r in res["rows"]:
         g = "-" if r["growth_T"] is None else f"{r['growth_T']:.2f}"
         ex = "-" if r["excess"] is None else f"{r['excess']:+.1%}"
         C.log(f"{r['t']:7}{r['grade_T']:>4}{r['adj_T']:>8.2f}{r['net_T']:>8.2f}{r['raw_T']:>8.2f}{r['adj1_T']:>8.2f}{g:>6}"
-              f"{r['return']:>+9.1%}{ex:>9}  {'; '.join(r['notes'])}")
+              f"{fmt_pct(r['return']):>9}{ex:>9}  {'; '.join(r['notes'])}")
     st = res["stats"]
     C.log("스피어만 ρ:")
     for k, label in [("adj_vs_return", "adj_T ~ 수익률"), ("adj_vs_excess", "adj_T ~ 초과수익"),
@@ -371,8 +396,8 @@ def print_result(res):
         C.log(f"  {label:26} {fmt_rho(st[k])}")
     C.log("등급 그룹별 수익률:")
     for g in res["by_grade"]:
-        C.log(f"  {g['grade']:3} n={g['n']:2} 평균 {g['mean_return']:+.1%} 중앙값 {g['median_return']:+.1%} "
-              f"초과(평균) {('n/a' if g['mean_excess'] is None else format(g['mean_excess'], '+.1%'))}  {', '.join(g['tokens'])}")
+        C.log(f"  {g['grade']:3} n={g['n']:2} 평균 {fmt_pct(g['mean_return'])} 중앙값 {fmt_pct(g['median_return'])} "
+              f"초과(평균) {fmt_pct(g['mean_excess'])}  {', '.join(g['tokens'])}")
     if res["excluded"]:
         C.log("제외:")
         for e in res["excluded"]:
@@ -391,7 +416,7 @@ def write_summary(results, path):
     for r in results:
         st = r["stats"]
         n = st["adj_vs_return"]["n"]
-        lines.append(f"| {r['T']} | {n} | {r['btc_return']:+.1%} | {fmt_rho(st['adj_vs_return'])} | {fmt_rho(st['adj_vs_excess'])} | "
+        lines.append(f"| {r['T']} | {n} | {fmt_pct(r['btc_return'])} | {fmt_rho(st['adj_vs_return'])} | {fmt_rho(st['adj_vs_excess'])} | "
                      f"{fmt_rho(st['raw_vs_return'])} | {fmt_rho(st['net_vs_return'])} | {fmt_rho(st['adj1_vs_return'])} | "
                      f"{fmt_rho(st['adj_growth_vs_return'])} |")
         a, g, rw, a1 = (st["adj_vs_return"]["rho"], st["adj_growth_vs_return"]["rho"],
@@ -410,13 +435,12 @@ def write_summary(results, path):
               f"- 음수 처리 ①안(15장 보류 과제): ρ(adj1) 가 현행 ②안 ρ(adj) 보다 높은 T 는 {k}곳 중 {wins_adj1}곳.",
               "", "## 등급 그룹별 평균 수익률", ""]
     for r in results:
-        lines.append(f"### T={r['T']} (T+H={r['T_plus_H']}, BTC {r['btc_return']:+.1%})")
+        lines.append(f"### T={r['T']} (T+H={r['T_plus_H']}, BTC {fmt_pct(r['btc_return'])})")
         lines.append("")
         lines.append("| 등급 | n | 평균 | 중앙값 | 초과(평균) | 종목 |")
         lines.append("|---|---|---|---|---|---|")
         for g in r["by_grade"]:
-            ex = "n/a" if g["mean_excess"] is None else f"{g['mean_excess']:+.1%}"
-            lines.append(f"| {g['grade']} | {g['n']} | {g['mean_return']:+.1%} | {g['median_return']:+.1%} | {ex} | {', '.join(g['tokens'])} |")
+            lines.append(f"| {g['grade']} | {g['n']} | {fmt_pct(g['mean_return'])} | {fmt_pct(g['median_return'])} | {fmt_pct(g['mean_excess'])} | {', '.join(g['tokens'])} |")
         if r["excluded"]:
             lines.append("")
             lines.append("제외: " + "; ".join(f"{e['t']}({e['reason']})" for e in r["excluded"]))

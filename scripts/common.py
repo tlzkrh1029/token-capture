@@ -7,6 +7,7 @@ HTTP 재시도, 날짜, 경로, 산출식 상수를 모아 둔다. 외부 패키
 """
 import datetime as dt
 import glob
+import http.client
 import json
 import os
 import sys
@@ -84,7 +85,7 @@ def http_get_json(url, retries=3, timeout=60, headers=None, backoff=(1, 2, 4)):
             last = HttpError(url, e.code, e.reason)
             if 400 <= e.code < 500 and e.code not in (408, 425, 429):
                 raise last                       # 404 등은 다시 시도해도 같다
-        except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
+        except (urllib.error.URLError, http.client.HTTPException, TimeoutError, OSError, ValueError) as e:
             wait = None
             last = HttpError(url, None, repr(e))
         if attempt < retries:
@@ -148,6 +149,11 @@ def dump_json(obj, path, indent=None):
 
 def load_universe(path=UNIVERSE_PATH):
     return load_json(path)
+
+
+# 동봉 universe.json(2026-10-09) 을 그대로 둔 고정본. score.py 가 매주 data/universe.json 의 inc30 을 다시 쓰므로
+# 참조 검증(score_reference.py --selftest), 단위 테스트, 시드 재생성은 이 고정본을 기준으로 한다.
+UNIVERSE_FIXTURE_PATH = os.path.join(REPO_ROOT, "tests", "fixtures", "universe-2026-10-09.json")
 
 
 def save_universe(universe, path=UNIVERSE_PATH):

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 score.py 가 score_reference.py 와 같은 결과를 내는지 검증한다. (HANDOVER.md 7-4절, 14장 6단계)
+universe 는 고정본 tests/fixtures/universe-2026-10-09.json 을 쓴다(data/universe.json 은 매주 inc30 이 바뀐다).
 
   python -m unittest discover -s tests -v
 """
@@ -20,7 +21,7 @@ TOL = 0.002
 class ScoreMatchesReference(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.universe = C.load_universe(os.path.join(ROOT, "data", "universe.json"))
+        cls.universe = C.load_universe(C.UNIVERSE_FIXTURE_PATH)
 
     def _compare(self, date):
         case = R.SELFTEST[date]
@@ -92,14 +93,38 @@ class ScoreMatchesReference(unittest.TestCase):
         self.assertAlmostEqual(by["ORCA"]["growth"], 410060 / (2e6 / C.ANN), places=2)
 
     def test_recompute_inc(self):
-        uni = {"tokens": [dict(t) for t in self.universe["tokens"] if t["t"] in ("NEAR", "VVV", "ETH")]}
+        uni = {"tokens": [
+            {"t": "NEAR", "inc30": 7.14, "inc_qty30": 2654000, "inc_ref_price": 2.69, "inc_ref_date": "2026-09-17"},
+            {"t": "VVV", "inc30": 5.137, "inc_qty30": 205479, "inc_ref_price": 25.0, "inc_ref_date": "2026-09-17"},
+            {"t": "ETH", "inc30": 121.0, "inc_qty30": None, "inc_ref_price": None, "inc_ref_date": None},
+        ]}
         changed = S.recompute_inc(uni, {"NEAR": 5.0, "VVV": None, "ETH": 2500.0}, "2026-10-10")
         by = {t["t"]: t for t in uni["tokens"]}
         self.assertEqual([c[0] for c in changed], ["NEAR"])
         self.assertAlmostEqual(by["NEAR"]["inc30"], 2654000 * 5.0 / 1e6, places=3)
+        self.assertEqual(by["NEAR"]["inc_ref_price"], 5.0)
         self.assertEqual(by["NEAR"]["inc_ref_date"], "2026-10-10")
         self.assertEqual(by["VVV"]["inc30"], 5.137)               # 가격 실패 → 직전 값 유지
+        self.assertEqual(by["VVV"]["inc_ref_date"], "2026-09-17")
         self.assertEqual(by["ETH"]["inc30"], 121.0)               # inc_qty30 없음 → 그대로
+
+    def test_second_week_rule(self):
+        """직전 스냅샷이 7일 미만 전이면 carried 재실패를 '2주 연속'으로 세지 않는다."""
+        uni = {"formula": self.universe["formula"],
+               "tokens": [t for t in self.universe["tokens"] if t["t"] == "DODO"]}
+        prev_row = {"t": "DODO", "g": "D", "adj": 0.3, "price": 0.018, "hr30": 8518, "hr7": 2991,
+                    "carried": True, "carried_fields": ["hr30", "hr7"]}
+        raw = {"hr": {"DODO": {"total30d": None}}, "price": {"DODO": 0.019}}
+        # 하루 뒤 재실행: 다시 carried
+        rows, failures, carried, _ = S.build_rows(uni, raw, {"date": "2026-10-10", "rows": [prev_row]}, "2026-10-11")
+        self.assertEqual(len(rows), 1)
+        self.assertTrue(rows[0]["carried"])
+        self.assertEqual(failures, [])
+        # 7일 뒤: 2주 연속 실패로 제외
+        rows, failures, carried, _ = S.build_rows(uni, raw, {"date": "2026-10-10", "rows": [prev_row]}, "2026-10-17")
+        self.assertEqual(rows, [])
+        self.assertEqual(failures[0]["t"], "DODO")
+        self.assertIn("2주 연속", failures[0]["reason"])
 
 
 if __name__ == "__main__":

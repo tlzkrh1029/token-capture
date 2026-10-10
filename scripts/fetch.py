@@ -12,6 +12,7 @@ fetch.py : 주간 수집. 귀속액(Holders Revenue)과 가격을 받아 data/ra
           total30d 가 null 이면(응답은 200) 수집 실패로 센다. 추정값으로 메우지 않는다.
   가격    1) coins.llama.fi/prices/current/coingecko:<cg>  (25개씩 묶음)
           2) 1)에서 빠진 id → coins.llama.fi 에 DefiLlama 응답의 토큰 컨트랙트 주소(<chain>:<address>)로 다시 조회
+             (접두사 없는 0x 주소는 ethereum, base58 주소는 solana 로 보고, chains 의 체인도 후보로 같이 보낸다)
           3) 그래도 없으면 CoinGecko simple/price 에 같은 id 로 조회 (환경변수 COINGECKO_API_KEY 가 있으면 데모 키 헤더로 보냄)
           모든 출처에서 실패한 종목은 null 로 두고 failures 에 남긴다. 직전 가격으로 대체하는 일은 score.py 가 한다.
 종료 조건
@@ -69,31 +70,49 @@ def fetch_hr(tokens):
     return hr, failures
 
 
-def _llama_prices(keys):
-    """coins.llama.fi/prices/current 를 25개씩 호출해 {key: {price, timestamp, confidence}} 로 돌려준다."""
+def _llama_prices(keys, batch_failures=None):
+    """
+    coins.llama.fi/prices/current 를 25개씩 호출해 {key: {price, timestamp, confidence}} 로 돌려준다.
+    한 묶음이 실패해도 나머지 묶음의 결과는 버리지 않는다. 실패한 묶음은 batch_failures 에 남긴다.
+    """
     got = {}
     for batch in C.batched(keys, C.PRICE_BATCH):
         url = C.LLAMA_PRICE_CURRENT.format(keys=",".join(batch))
-        d = C.http_get_json(url)
+        try:
+            d = C.http_get_json(url)
+        except Exception as e:
+            C.warn(f"coins.llama.fi 묶음 실패({len(batch)}개):", e)
+            if batch_failures is not None:
+                batch_failures.append({"kind": "price_batch", "keys": list(batch), "reason": str(e)})
+            continue
         got.update(d.get("coins", {}))
     return got
 
 
-def _address_key(hr_row):
-    """DefiLlama 응답의 address/chains 로 coins.llama.fi 조회 키(<chain>:<address>)를 만든다. 못 만들면 None."""
+def _address_keys(hr_row):
+    """
+    DefiLlama 응답의 address/chains 로 coins.llama.fi 조회 키(<chain>:<address>) 후보 목록을 만든다.
+    DefiLlama 관례: 접두사가 있는 주소('base:0x…')는 그대로, 접두사 없는 0x 주소는 이더리움 메인넷,
+    접두사 없는 base58 주소는 Solana 다. 그 뒤에 chains 에 적힌 체인으로 만든 키도 후보로 붙인다.
+    """
     if not hr_row:
-        return None
+        return []
     addr = hr_row.get("address")
     if not addr or not isinstance(addr, str):
-        return None
-    if ":" in addr:                      # 'base:0x…' 처럼 이미 체인 접두사가 있음
-        return addr
-    chains = hr_row.get("chains") or []
-    for ch in chains:
+        return []
+    keys = []
+    if ":" in addr:
+        keys.append(addr)
+    elif addr.startswith("0x"):
+        keys.append(f"ethereum:{addr}")
+    else:
+        keys.append(f"solana:{addr}")
+    bare = addr.split(":", 1)[1] if ":" in addr else addr
+    for ch in hr_row.get("chains") or []:
         key = CHAIN_KEYS.get(str(ch).lower())
-        if key:
-            return f"{key}:{addr}"
-    return None
+        if key and f"{key}:{bare}" not in keys:
+            keys.append(f"{key}:{bare}")
+    return keys
 
 
 def _coingecko_prices(ids):
@@ -116,36 +135,28 @@ def fetch_prices(tokens, hr):
     price, price_meta, failures = {}, {}, []
     # 1) coins.llama.fi, coingecko:<cg>
     keys = {f"coingecko:{t['cg']}": t for t in tokens}
-    try:
-        got = _llama_prices(list(keys))
-    except Exception as e:
-        C.warn("coins.llama.fi 1단계 실패:", e)
-        got = {}
+    got = _llama_prices(list(keys), failures)
     for k, t in keys.items():
         c = got.get(k)
         if c and c.get("price") is not None:
             price[t["t"]] = float(c["price"])
             price_meta[t["t"]] = {"source": "llama:coingecko", "key": k,
                                   "timestamp": c.get("timestamp"), "confidence": c.get("confidence")}
-    # 2) 빠진 종목은 컨트랙트 주소로 coins.llama.fi 재조회
+    # 2) 빠진 종목은 컨트랙트 주소로 coins.llama.fi 재조회 (후보 키 여러 개를 한 번에 보내고 응답에 있는 것을 쓴다)
     missing = [t for t in tokens if t["t"] not in price]
     addr_keys = {}
     for t in missing:
-        k = _address_key(hr.get(t["t"]))
-        if k:
-            addr_keys[k] = t
+        for k in _address_keys(hr.get(t["t"])):
+            addr_keys.setdefault(k, t)
     if addr_keys:
-        try:
-            got = _llama_prices(list(addr_keys))
-        except Exception as e:
-            C.warn("coins.llama.fi 2단계(주소) 실패:", e)
-            got = {}
+        got = _llama_prices(list(addr_keys), failures)
         for k, t in addr_keys.items():
             c = got.get(k)
-            if c and c.get("price") is not None:
-                price[t["t"]] = float(c["price"])
-                price_meta[t["t"]] = {"source": "llama:address", "key": k,
-                                      "timestamp": c.get("timestamp"), "confidence": c.get("confidence")}
+            if t["t"] in price or not c or c.get("price") is None:
+                continue
+            price[t["t"]] = float(c["price"])
+            price_meta[t["t"]] = {"source": "llama:address", "key": k,
+                                  "timestamp": c.get("timestamp"), "confidence": c.get("confidence")}
     # 3) 그래도 없으면 CoinGecko 에 같은 id 로
     missing = [t for t in tokens if t["t"] not in price]
     if missing:

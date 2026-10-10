@@ -11,6 +11,7 @@ score.py : 채점. data/raw/<date>.json 과 data/universe.json 으로 스냅샷�
     universe.json 의 inc30·inc_ref_price·inc_ref_date 를 갱신한다. 가격 수집에 실패한 종목은 직전 값을 유지한다.
   * 수집 실패 종목은 직전 스냅샷의 값을 쓰고 행에 "carried": true, "carried_fields": [...] 를 넣는다.
     같은 필드가 2주 연속 실패하면 행을 만들지 않고 failures 에 남긴다. 직전 스냅샷에도 없으면 행을 만들지 않는다.
+    "2주 연속" 은 직전 스냅샷이 7일 이상 전일 때만 성립한다(같은 주의 재실행은 같은 실패로 센다).
   * hr30·hr7 이 직전 주와 정확히 같으면(수집에 성공했는데도) "stale_suspect": true 를 넣고 로그와 latest.json 의 meta 에 적는다.
     둘 다 0 인 행(실현 0)은 같은 값이 당연하므로 제외한다. 주기형 목록 종목은 정상이어도 같은 값이 나올 수 있다.
   * growth = hr30 ÷ (hr1y ÷ ANN) 을 행에 기록한다(13장. 채점에는 쓰지 않는다).
@@ -131,6 +132,9 @@ def growth_of(hr_row):
     return round(h30 / (h1y / C.ANN), 3)
 
 
+WEEK_DAYS = 7   # "2주 연속 실패" 판정은 직전 스냅샷이 7일 이상 전일 때만 한다. 같은 주의 재실행은 같은 실패로 센다.
+
+
 def build_rows(universe, raw, prev, date):
     """
     raw(fetch.py 출력)와 직전 스냅샷 prev 로 행을 만든다.
@@ -138,6 +142,10 @@ def build_rows(universe, raw, prev, date):
     """
     k_acc, k_auto, lumpy, bands = C.formula_constants(universe)
     prev_rows = {r["t"]: r for r in (prev or {}).get("rows", [])}
+    prev_date = (prev or {}).get("date")
+    # 직전 스냅샷이 한 주 이상 전이면 거기서 carried 였던 필드의 재실패는 "2주 연속 실패"다.
+    # 하루 이틀 뒤의 재실행(수동 실행, 같은 주 보완)은 같은 실패로 보고 다시 carried 로 둔다.
+    second_week = bool(prev_date) and (C.parse_date(date) - C.parse_date(prev_date)).days >= WEEK_DAYS
     rows, failures, carried, stale = [], [], [], []
     for tok in universe["tokens"]:
         sym = tok["t"]
@@ -155,8 +163,8 @@ def build_rows(universe, raw, prev, date):
             if pr is None:
                 failures.append({"t": sym, "kind": "hr", "reason": "귀속액 미확인(직전 스냅샷에도 없음)"})
                 continue
-            if "hr30" in prev_carried:
-                failures.append({"t": sym, "kind": "hr", "reason": "귀속액 미확인(2주 연속 실패)"})
+            if "hr30" in prev_carried and second_week:
+                failures.append({"t": sym, "kind": "hr", "reason": f"귀속액 미확인(2주 연속 실패, 직전 {prev_date}부터 carried)"})
                 continue
             hr30, hr7 = pr["hr30"], pr["hr7"]
             carried_fields += ["hr30", "hr7"]
@@ -165,8 +173,8 @@ def build_rows(universe, raw, prev, date):
             if pr is None or pr.get("price") is None:
                 failures.append({"t": sym, "kind": "price", "reason": "가격 미확인(직전 스냅샷에도 없음)"})
                 continue
-            if "price" in prev_carried:
-                failures.append({"t": sym, "kind": "price", "reason": "가격 미확인(2주 연속 실패)"})
+            if "price" in prev_carried and second_week:
+                failures.append({"t": sym, "kind": "price", "reason": f"가격 미확인(2주 연속 실패, 직전 {prev_date}부터 carried)"})
                 continue
             price = pr["price"]
             carried_fields.append("price")
