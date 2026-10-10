@@ -26,3 +26,11 @@ claude.ai 예약 작업 `토큰캡처 주간 갱신` (`trig_01VBieQsYUtDeQzELqVa
    - GitHub 실행 여부(2단계에서 멈췄으면 그 사실)
 
 주의: 저장소(tlzkrh1029/token-capture)에 푸시하거나 파일을 고치지 않습니다. 다른 아티팩트를 만들지 않습니다.
+
+---
+
+## 교체 전 지시문 (2026-10-10 교체, 되돌릴 때 참고)
+
+`trig_01VBieQsYUtDeQzELqVakfpP` 의 교체 전 이름은 "토큰캡처 주간 갱신 (토 18:00 KST)", 일정은 `0 9 * * 6` 이었다. 교체 전 지시문은 WebFetch 로 `coins.llama.fi`·`api.llama.fi` 를 직접 불러 파이썬으로 채점하고 `snapshots/<date>` 와 `meta/state` 를 쓰며, `meta/state.nextResearch` 이후면 격주 리서치까지 수행하는 내용이었다(HANDOVER.md 3-3절·4장에 실패 원인이 정리되어 있다). 격주 리서치 절차는 HANDOVER.md 11-3절에 그대로 남아 있다.
+
+`trig_01QeLt5P1qf3RcYjRTGVbE3D` (토큰캡처 보완 실행, 토 21:00 KST, `0 12 * * 6`)는 같은 날 비활성화했다. HANDOVER.md 11-2절은 삭제를 지시하지만, 예약 작업을 삭제하면 그 작업이 만든 세션 기록도 함께 지워지므로 삭제는 사용자 확인 뒤에 한다.
