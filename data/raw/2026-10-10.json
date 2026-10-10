@@ -1,7 +1,7 @@
 {
  "date": "2026-10-10",
- "fetched_at": "2026-10-10T08:57:02Z",
- "universe_updated": "2026-10-09",
+ "fetched_at": "2026-10-10T10:36:39Z",
+ "universe_updated": "2026-10-10",
  "count": 46,
  "hr": {
   "HYPE": {
@@ -78,7 +78,7 @@
    "total30d": 11433818,
    "total1y": 55807731,
    "annualized1y": 71473059,
-   "totalAllTime": 55983707,
+   "totalAllTime": 55954175,
    "slug": "uniswap",
    "name": "Uniswap",
    "gecko_id": "uniswap",
@@ -142,7 +142,7 @@
    "total30d": 7788021,
    "total1y": 90714391,
    "annualized1y": 90714391,
-   "totalAllTime": 486169341,
+   "totalAllTime": 486168855,
    "slug": "aerodrome",
    "name": "Aerodrome",
    "gecko_id": "aerodrome-finance",
@@ -191,7 +191,7 @@
    "total30d": 3720302.77,
    "total1y": 48035356.02,
    "annualized1y": 48035356.02,
-   "totalAllTime": 356381932.3100002,
+   "totalAllTime": 356381773.0000002,
    "slug": "pancakeswap",
    "name": "PancakeSwap",
    "gecko_id": "pancakeswap-token",
@@ -218,7 +218,7 @@
    "total30d": 3602853,
    "total1y": 27072388,
    "annualized1y": 37571945.323193915,
-   "totalAllTime": 27219040,
+   "totalAllTime": 27215251,
    "slug": "aster",
    "name": "Aster",
    "gecko_id": "aster-2",
@@ -279,13 +279,13 @@
    ]
   },
   "ETH": {
-   "total24h": 112209,
+   "total24h": 109731,
    "total48hto24h": 496437,
    "total7d": 1678653,
    "total30d": 6533255,
    "total1y": 61956744,
    "annualized1y": 61956744,
-   "totalAllTime": 13133181001,
+   "totalAllTime": 13133178523,
    "slug": "ethereum",
    "name": "Ethereum",
    "gecko_id": "ethereum",
@@ -301,7 +301,7 @@
    "total30d": 4100191,
    "total1y": 18716892,
    "annualized1y": 18716892,
-   "totalAllTime": 66062115,
+   "totalAllTime": 66060007,
    "slug": "raydium",
    "name": "Raydium",
    "gecko_id": "raydium",
@@ -381,7 +381,7 @@
    "total30d": 687023,
    "total1y": 3841774,
    "annualized1y": 6373852.318181818,
-   "totalAllTime": 3852691,
+   "totalAllTime": 3852702,
    "slug": "spark",
    "name": "Spark",
    "gecko_id": "spark-2",
@@ -414,7 +414,7 @@
    "total30d": 1548097,
    "total1y": 27739640,
    "annualized1y": 27739640,
-   "totalAllTime": 312807568,
+   "totalAllTime": 312809477,
    "slug": "curve-finance",
    "name": "Curve Finance",
    "gecko_id": "curve-dao-token",
@@ -444,13 +444,13 @@
    ]
   },
   "CVX": {
-   "total24h": 2716,
+   "total24h": 2817,
    "total48hto24h": 3510,
    "total7d": 60830,
    "total30d": 875028,
    "total1y": 12777748,
    "annualized1y": 12777748,
-   "totalAllTime": 175368939,
+   "totalAllTime": 175369040,
    "slug": "convex-finance",
    "name": "Convex Finance",
    "gecko_id": "convex-finance",
@@ -466,7 +466,7 @@
    "total30d": 310968,
    "total1y": 12778980,
    "annualized1y": 12778980,
-   "totalAllTime": 56626881,
+   "totalAllTime": 56627325,
    "slug": "pendle",
    "name": "Pendle",
    "gecko_id": "pendle",
@@ -494,7 +494,7 @@
    "total30d": 396274.06,
    "total1y": 5707600.239999998,
    "annualized1y": 5707600.239999998,
-   "totalAllTime": 46709792.17999998,
+   "totalAllTime": 46709792.63999997,
    "slug": "velodrome",
    "name": "Velodrome",
    "gecko_id": "velodrome-finance",
@@ -519,7 +519,7 @@
    "total30d": 493180,
    "total1y": 2073452,
    "annualized1y": 2084875.9779614327,
-   "totalAllTime": 5328600,
+   "totalAllTime": 5327527,
    "slug": "orca",
    "name": "Orca",
    "gecko_id": "orca",
@@ -571,7 +571,7 @@
    "total30d": 295654,
    "total1y": 1917389,
    "annualized1y": 1917389,
-   "totalAllTime": 29147157,
+   "totalAllTime": 29147193,
    "slug": "venus",
    "name": "Venus",
    "gecko_id": "venus",
@@ -627,7 +627,7 @@
    "total30d": 35133,
    "total1y": 461606,
    "annualized1y": 461606,
-   "totalAllTime": 4803124,
+   "totalAllTime": 4803186,
    "slug": "vvs-finance",
    "name": "VVS Finance",
    "gecko_id": "vvs-finance",
@@ -960,13 +960,13 @@
    ]
   },
   "VVV": {
-   "total24h": 20446,
+   "total24h": 20496,
    "total48hto24h": 19657,
    "total7d": 542799,
    "total30d": 908155,
    "total1y": 3524160.4299999997,
    "annualized1y": 4203655.4148692805,
-   "totalAllTime": 3544606.4299999997,
+   "totalAllTime": 3544656.4299999997,
    "slug": "venice",
    "name": "Venice",
    "gecko_id": "venice-token",
@@ -977,328 +977,328 @@
   }
  },
  "price": {
-  "HYPE": 84.35261517170878,
-  "CC": 0.12144104659944482,
-  "TRX": 0.33086786978120347,
-  "PUMP": 0.005582449164604864,
-  "UNI": 7.43875035332452,
-  "AERO": 0.8475797204594985,
-  "PONS": 0.35028909690833177,
-  "STONK": 0.1339408543098689,
-  "CAKE": 2.2207115150390013,
-  "ASTER": 0.7102315482347751,
-  "SKY": 0.07758448713050058,
-  "JUP": 0.3680949088804086,
-  "LIT": 3.5716144944108046,
-  "ETH": 2493.480987333208,
-  "RAY": 2.3013455616596965,
-  "ORE": 105.59537211863845,
-  "SOL": 109.86603136670027,
-  "BNB": 749.7111475165335,
-  "BONK": 3.4120414441722603e-06,
-  "SPK": 0.021755324097931496,
-  "NEAR": 5.2315359093933305,
-  "CRV": 0.35653485668238727,
-  "CVX": 2.0853806686626233,
-  "PENDLE": 2.1409393512607897,
-  "VELO": 0.03680183819754056,
-  "ORCA": 2.400530188252273,
-  "RAIL": 2.6785666555960104,
-  "INJ": 7.050652369623136,
-  "XVS": 3.151437059202442,
-  "SYRUP": 0.22944452508411203,
-  "MPLX": 0.04923303032235528,
-  "VVS": 9.957259213223375e-07,
-  "DEEP": 0.02174608629826576,
-  "DODO": 0.018623995844032355,
-  "YB": 0.07878843600570028,
-  "JTO": 0.5204949212755973,
-  "ETHFI": 0.6763071014465735,
-  "AAVE": 174.5193600411765,
-  "GEOD": 0.3007087598596827,
-  "USUAL": 0.012417711338175685,
-  "DBR": 0.01915876309588542,
-  "EDGE": 0.3686835059195115,
-  "DYDX": 0.14143584097124448,
-  "LINK": 12.971247971444198,
-  "ZRO": 1.962559012683339,
-  "VVV": 22.59556267541026
+  "HYPE": 83.85681724208914,
+  "CC": 0.11969388812096055,
+  "TRX": 0.3307451027715266,
+  "PUMP": 0.0055554186778348415,
+  "UNI": 7.4466441998204305,
+  "AERO": 0.8509204228672286,
+  "PONS": 0.35336683369311483,
+  "STONK": 0.13415392812034532,
+  "CAKE": 2.212619009748864,
+  "ASTER": 0.7063266410669231,
+  "SKY": 0.07725032575791894,
+  "JUP": 0.36724536631901367,
+  "LIT": 3.6593468733549446,
+  "ETH": 2491.887603978461,
+  "RAY": 2.3258716276717823,
+  "ORE": 105.29092773957518,
+  "SOL": 109.39421843580895,
+  "BNB": 748.273356059663,
+  "BONK": 3.375614150839707e-06,
+  "SPK": 0.021634794089321667,
+  "NEAR": 5.246551962173532,
+  "CRV": 0.3549610969337655,
+  "CVX": 2.082185753237062,
+  "PENDLE": 2.118071639737661,
+  "VELO": 0.03687248776744915,
+  "ORCA": 2.3971216067095993,
+  "RAIL": 2.699002300954919,
+  "INJ": 7.165028142981058,
+  "XVS": 3.129839480510275,
+  "SYRUP": 0.2291941257654172,
+  "MPLX": 0.04912520894041104,
+  "VVS": 9.91196049063595e-07,
+  "DEEP": 0.021643483364219004,
+  "DODO": 0.01864849723644666,
+  "YB": 0.07826410207960799,
+  "JTO": 0.5186654459377825,
+  "ETHFI": 0.6739241760262676,
+  "AAVE": 173.12698138943847,
+  "GEOD": 0.2997249093200091,
+  "USUAL": 0.012606759762030052,
+  "DBR": 0.019213376233189573,
+  "EDGE": 0.3646017481804609,
+  "DYDX": 0.13932070589854395,
+  "LINK": 12.878686228557788,
+  "ZRO": 1.9501895186706557,
+  "VVV": 22.356156731937535
  },
  "price_meta": {
   "HYPE": {
    "source": "llama:coingecko",
    "key": "coingecko:hyperliquid",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "CC": {
    "source": "llama:coingecko",
    "key": "coingecko:canton-network",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "TRX": {
    "source": "llama:coingecko",
    "key": "coingecko:tron",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "PUMP": {
    "source": "llama:coingecko",
    "key": "coingecko:pump-fun",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "UNI": {
    "source": "llama:coingecko",
    "key": "coingecko:uniswap",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "AERO": {
    "source": "llama:coingecko",
    "key": "coingecko:aerodrome-finance",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "PONS": {
    "source": "llama:coingecko",
    "key": "coingecko:pons",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "STONK": {
    "source": "llama:coingecko",
    "key": "coingecko:stonk-3",
-   "timestamp": 1791622076,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "CAKE": {
    "source": "llama:coingecko",
    "key": "coingecko:pancakeswap-token",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "ASTER": {
    "source": "llama:coingecko",
    "key": "coingecko:aster-2",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "SKY": {
    "source": "llama:coingecko",
    "key": "coingecko:sky",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "JUP": {
    "source": "llama:coingecko",
    "key": "coingecko:jupiter-exchange-solana",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "LIT": {
    "source": "llama:coingecko",
    "key": "coingecko:lighter",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "ETH": {
    "source": "llama:coingecko",
    "key": "coingecko:ethereum",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "RAY": {
    "source": "llama:coingecko",
    "key": "coingecko:raydium",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "ORE": {
    "source": "llama:coingecko",
    "key": "coingecko:ore",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "SOL": {
    "source": "llama:coingecko",
    "key": "coingecko:solana",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "BNB": {
    "source": "llama:coingecko",
    "key": "coingecko:binancecoin",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "BONK": {
    "source": "llama:coingecko",
    "key": "coingecko:bonk",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "SPK": {
    "source": "llama:coingecko",
    "key": "coingecko:spark-2",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "NEAR": {
    "source": "llama:coingecko",
    "key": "coingecko:near",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "CRV": {
    "source": "llama:coingecko",
    "key": "coingecko:curve-dao-token",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "CVX": {
    "source": "llama:coingecko",
    "key": "coingecko:convex-finance",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "PENDLE": {
    "source": "llama:coingecko",
    "key": "coingecko:pendle",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "VELO": {
    "source": "llama:coingecko",
    "key": "coingecko:velodrome-finance",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "ORCA": {
    "source": "llama:coingecko",
    "key": "coingecko:orca",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "RAIL": {
    "source": "llama:coingecko",
    "key": "coingecko:railgun",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "INJ": {
    "source": "llama:coingecko",
    "key": "coingecko:injective-protocol",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "XVS": {
    "source": "llama:coingecko",
    "key": "coingecko:venus",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "SYRUP": {
    "source": "llama:coingecko",
    "key": "coingecko:syrup",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "MPLX": {
    "source": "llama:coingecko",
    "key": "coingecko:metaplex",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "VVS": {
    "source": "llama:coingecko",
    "key": "coingecko:vvs-finance",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "DEEP": {
    "source": "llama:coingecko",
    "key": "coingecko:deep",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "DODO": {
    "source": "llama:coingecko",
    "key": "coingecko:dodo",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "YB": {
    "source": "llama:coingecko",
    "key": "coingecko:yield-basis",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "JTO": {
    "source": "llama:coingecko",
    "key": "coingecko:jito-governance-token",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "ETHFI": {
    "source": "llama:coingecko",
    "key": "coingecko:ether-fi",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "AAVE": {
    "source": "llama:coingecko",
    "key": "coingecko:aave",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "GEOD": {
    "source": "llama:coingecko",
    "key": "coingecko:geodnet",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "USUAL": {
    "source": "llama:coingecko",
    "key": "coingecko:usual",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "DBR": {
    "source": "llama:coingecko",
    "key": "coingecko:debridge",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "EDGE": {
    "source": "llama:coingecko",
    "key": "coingecko:edgex",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "DYDX": {
    "source": "llama:coingecko",
    "key": "coingecko:dydx-chain",
-   "timestamp": 1791622376,
+   "timestamp": 1791627775,
    "confidence": 0.99
   },
   "LINK": {
    "source": "llama:coingecko",
    "key": "coingecko:chainlink",
-   "timestamp": 1791622554,
+   "timestamp": 1791628501,
    "confidence": 0.99
   },
   "ZRO": {
    "source": "llama:coingecko",
    "key": "coingecko:layerzero",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   },
   "VVV": {
    "source": "llama:coingecko",
    "key": "coingecko:venice-token",
-   "timestamp": 1791622076,
+   "timestamp": 1791628383,
    "confidence": 0.99
   }
  },
