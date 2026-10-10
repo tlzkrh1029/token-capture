@@ -1,0 +1,126 @@
+# token-capture · 토큰캡처 정밀조사 파이프라인
+
+크립토 종목별 **토큰캡처**(프로토콜이 번 돈이 토큰 보유자에게 실제로 얼마나 귀속되는지)를 사람 개입 없이 매주 측정한다.
+설계 전문은 `docs/HANDOVER.md`와 `docs/HANDOVER-ADDENDUM.md`에 있다. 이 문서는 그 요약과 운영 절차다.
+
+매수·매도 판단이나 투자 권유는 만들지 않는다. 캡처 지표만 측정한다.
+
+## 구조
+
+```
+GitHub Actions (.github/workflows/weekly.yml, 토요일 09:00 UTC = 18:00 KST, Claude 사용량 0)
+  scripts/fetch.py  ──▶ api.llama.fi(귀속액) · coins.llama.fi(가격) 직접 호출 → data/raw/YYYY-MM-DD.json
+  scripts/score.py  ──▶ data/universe.json 으로 채점 → data/snapshots/YYYY-MM-DD.json, data/latest.json, data/history.csv
+  commit            ──▶ data/ 를 저장소에 커밋
+        │
+        ▼
+Claude 예약 작업 (토 19:30 KST 브리지, HANDOVER.md 11-1절)
+  raw.githubusercontent.com/tlzkrh1029/token-capture/main/data/latest.json 을 읽어
+  아티팩트 저장소 snapshots/<date>, meta/state, (바뀌었으면) meta/universe 에 쓴다
+        │
+        ▼
+아티팩트 `토큰캡처 등급표` 가 저장소를 읽어 표·차트 갱신
+```
+
+```
+scripts/common.py          HTTP 재시도, 날짜, 경로, 산출식 상수
+scripts/fetch.py           주간 수집
+scripts/score.py           채점 (score_reference.py 와 같은 결과를 내야 한다)
+scripts/score_reference.py 채점식 참조 구현(검증본). `--selftest` 로 2026-09-17·09-19 실측 84행을 재현한다
+scripts/backtest.py        과거 시점 T 재구성 + 스피어만 순위상관 (12장)
+scripts/audit_chart.py     일별 시계열로 저장값 점검 (보완 문서 2절)
+scripts/seed_snapshots.py  직전 스냅샷 재생성 (보완 문서 3절)
+tests/test_score.py        score.py ↔ score_reference.py 일치 검증
+data/universe.json         추적 대상 46종목 정의와 산출식 상수 (단일 기준)
+data/raw/                  수집 원본 (감사용, 그대로 보존)
+data/snapshots/            채점 결과 {date, rows}  (아티팩트 행 형식)
+data/latest.json           최신 스냅샷 + meta (브리지가 읽음)
+data/history.csv           날짜별 평탄 파일
+data/backtest/             백테스트 결과 <T>.json 과 summary.md
+```
+
+## 채점 모델 (HANDOVER.md 7장)
+
+```
+ANN = 365/30 = 12.1667
+mc  = price × circ / 1e6                       시총(백만 달러)
+raw = (hr30/1e6) / mc × 100 × ANN               원시 캡처율 %
+net = ((hr30/1e6) − inc30) / mc × 100 × ANN     순 캡처율 % (inc30 이 null 이면 raw 와 같음)
+rr  = (hr7 × 30/7) / hr30                       런레이트비
+adj = net × k_acc × k_auto × k_stab × k_dil × k_hist   (net ≥ 0)
+adj = net                                        (net < 0, 계수 미적용 — 2026-09-17 ②안)
+```
+
+| 계수 | 규칙 |
+|---|---|
+| k_acc 귀속 실질성 | 소각·분배 1.00, 매수 후 보유 0.35 |
+| k_auto 집행 자동성 | 코드 자동 1.00, 정기 집행 0.90, 불규칙 0.65, 정지 0.00 |
+| k_stab 수치 안정성 | hr30=0 → 0, 주기형 목록 → 0.90, 그 밖에 clamp(rr, 0.30, 1.00) |
+| k_dil 미래 희석 | max(0.40, (1/fdv)^0.5) |
+| k_hist 집행 이력 | 12개월 이상 1.00, 6~12 0.85, 3~6 0.70, 3개월 미만 0.50 |
+
+등급: S+ ≥12, S ≥8, A ≥5, B+ ≥3, B ≥1.5, C ≥0.4, D 그 미만(음수 포함).
+
+행 필드(아티팩트 페이지가 읽는 모양, 순서 고정): `t, n, slug, cg, mc, fdv, price, hr30, hr7, rr, raw, net, adj, g, inc, ver, acc, auto, stab, k{acc, auto, stab, dil, hist}, hist, note`.
+그 뒤에 선택 필드가 붙을 수 있다: `growth`(성장배수, 채점에는 쓰지 않음), `carried`·`carried_fields`(직전 값 사용), `stale_suspect`(직전 주와 hr30·hr7 동일).
+
+## 수집 규칙 (6장, 보완 문서 1절)
+
+- 귀속액: `api.llama.fi/summary/fees/<slug>?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`. 동시 8개, 1·2·4초 백오프 3회. 주간 수집은 반드시 두 exclude 파라미터를 붙인다(백테스트만 뺀다).
+- `total30d` 가 `null` 로 오면(응답은 200) 수집 실패로 센다. 0 으로 바꾸지 않는다. 2026-10-10 기준 DODO 가 그렇다(어댑터 기록이 2026-08-29 에서 끝남).
+- 가격 순서: ① `coins.llama.fi/prices/current/coingecko:<cg>` (25개씩) → ② 빠진 종목은 DefiLlama 응답의 컨트랙트 주소로 `coins.llama.fi` 재조회 → ③ 그래도 없으면 CoinGecko `simple/price` 같은 id. 환경변수 `COINGECKO_API_KEY` 가 있으면 데모 키 헤더(`x-cg-demo-api-key`)로 보낸다. 키는 코드나 커밋에 넣지 않고 저장소 Secrets 에만 둔다.
+- 종료 조건: hr30 실패가 전체의 10% 초과 또는 가격 실패 3개 초과 → raw 파일을 쓴 뒤 `exit 1`. 워크플로가 실패로 끝나고 GitHub 가 이메일을 보낸다.
+- 실패 종목은 score.py 가 직전 스냅샷 값을 쓰고 `carried: true`, `carried_fields` 를 넣는다. 같은 필드가 2주 연속 실패하면 행을 만들지 않고 `latest.json` 의 `meta.failures` 에 남긴다.
+- `inc_qty30` 이 있는 종목(NEAR, VVV)은 매주 `inc30 = inc_qty30 × 그날 가격 ÷ 1e6` 으로 다시 계산하고 `universe.json` 의 `inc30`, `inc_ref_price`, `inc_ref_date`, `updated` 를 갱신해 함께 커밋한다.
+- `stale_suspect`: 수집에 성공했는데 hr30·hr7 이 직전 스냅샷과 정확히 같으면 표시한다(둘 다 0 인 "실현 0" 행은 제외). 주기형 목록 종목은 정상이어도 같을 수 있다. 워크플로는 실패시키지 않는다.
+
+## 운영 절차
+
+### 로컬 검증
+
+```
+python scripts/score_reference.py --selftest --universe data/universe.json   # SELFTEST PASS 여야 한다
+python -m unittest discover -s tests -v                                       # score.py 가 참조 구현과 일치하는지
+python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026-10-10
+```
+
+### 첫 실행 검증 (14장)
+
+1. Actions 탭에서 `tokencapture-weekly` 를 **Run workflow** 로 수동 실행한다.
+2. 로그: `귀속액 성공 N/46`, `가격 성공 46/46`, 실패 목록, 등급 변동 목록. 행 수는 46 이어야 한다(보완 문서 1절. STONK 는 CoinGecko id 가 `stonk-3` 으로 바뀌어 이제 `coins.llama.fi` 에서 가격이 나온다).
+3. `data/snapshots/<오늘>.json` 의 행 수 46, 필드 전부 존재, `rows[0]` 이 `adj` 최댓값.
+4. 값 대조: NEAR `hr30` 은 백만 달러대(`near-intents`)여야 하고 수만 달러대면 체인 slug 를 잘못 쓴 것이다. 음수 종목(ETH, CRV, SOL, CC, VELO, VVV, NEAR 등)은 `adj` 와 `net` 이 같아야 한다.
+5. 브리지 작업을 한 번 수동 발사해 아티팩트 저장소에 새 문서가 생기는지 본다. 첫 실행에서는 `meta/universe` 가 version 5 로 갱신되어야 한다(3-2절 불일치 해소).
+6. 보완 실행 작업(`trig_01QeLt5P1qf3RcYjRTGVbE3D`)을 삭제한다.
+
+### 매주
+
+워크플로가 토요일에 돈다. 실패 이메일이 오면 Actions 로그의 `[fetch] 실패` 줄을 본다. 재실행은 Run workflow. 같은 날 두 번 돌아도 같은 파일을 덮어쓰므로 중복 데이터 점은 생기지 않는다.
+
+### 격주 리서치 (11-3절, Claude 가 수행)
+
+신규 종목 발굴, `acc/auto/hist_k/note` 수정, `circ`·`fdv` 갱신, `inc_qty30` 이 없는 종목의 `inc30` 재조사. 결과를 `data/universe.json` 에 커밋하고 `updated` 를 올린다. 브리지가 다음 주에 `meta/universe` 를 따라 갱신한다.
+
+### 백테스트 (12장)
+
+```
+python scripts/backtest.py --all            # T = 2026-04-01, 05-01, 06-01, 06-17, 07-01, H=90 → data/backtest/
+python scripts/backtest.py --T 2026-06-17   # 한 시점만
+```
+
+창 정의: DefiLlama 의 `total30d` 는 기준일을 제외한 직전 30일 합계다(`audit_chart.py` 로 2026-10-10 확인). 백테스트도 같은 창을 쓴다.
+T 이후 구조가 바뀐 종목은 `backtest.py` 의 `STRUCTURE` 표로 T 시점 기준으로 되돌리거나 제외한다. 결과와 판정(성장 계수 채택 여부 등)은 `data/backtest/summary.md` 에 있다.
+
+### 점검 도구
+
+```
+python scripts/audit_chart.py --asof 2026-09-19     # 8종목의 일별 기록 양상과 저장값 대조 (보고만, 수정하지 않음)
+python scripts/seed_snapshots.py                    # 2026-09-17·09-19 스냅샷 재생성 (seeded: true)
+```
+
+## 인계 문서와 다르게 한 것
+
+- **STONK CoinGecko id** `stonk-2` → `stonk-3`. 2026-10-10 에 `stonk-2` 는 CoinGecko 에서 "coin not found" 였고, DefiLlama 의 `gecko_id` 와 Solana 주소(`6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx`)가 `stonk-3` 과 일치했다. `coins.llama.fi` 가 `stonk-3` 가격을 돌려주므로 CoinGecko 폴백 없이 46행이 나온다.
+- **가격 폴백 순서**에 컨트랙트 주소 조회를 CoinGecko 앞에 두었다. 같은 호스트이고 키가 없으며, CoinGecko 는 공용 IP 에서 간헐적으로 429 를 돌려준다.
+- **`total30d: null`** 은 0 이 아니라 수집 실패로 다룬다(carried → 2주 뒤 제외). 어댑터가 멈춘 것을 조용히 0 으로 쌓지 않기 위해서다.
+- **stale_suspect** 에서 hr30·hr7 이 둘 다 0 인 행은 제외한다. 정지 종목이 매주 표시되면 경고가 의미를 잃는다.
