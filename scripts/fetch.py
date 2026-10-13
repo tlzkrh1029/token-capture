@@ -15,6 +15,8 @@ fetch.py : 주간 수집. 귀속액(Holders Revenue)과 가격을 받아 data/ra
              (접두사 없는 0x 주소는 ethereum, base58 주소는 solana 로 보고, chains 의 체인도 후보로 같이 보낸다)
           3) 그래도 없으면 CoinGecko simple/price 에 같은 id 로 조회 (환경변수 COINGECKO_API_KEY 가 있으면 데모 키 헤더로 보냄)
           모든 출처에서 실패한 종목은 null 로 두고 failures 에 남긴다. 직전 가격으로 대체하는 일은 score.py 가 한다.
+  매출    같은 주소에 dataType=dailyRevenue, dailyFees 로 프로토콜 수익과 총수수료 스칼라도 받는다(귀속률 = 귀속액 ÷ 수익).
+          보조 지표이므로 실패해도 종료 조건에는 넣지 않는다.
 종료 조건
   hr30 수집 실패가 전체의 10%를 넘거나 가격 실패가 3개를 넘으면 raw 파일을 쓴 뒤 exit 1 로 끝낸다.
 """
@@ -68,6 +70,29 @@ def fetch_hr(tokens):
                 failures.append({"t": t["t"], "kind": "hr", "slug": t["slug"],
                                  "reason": "total30d null (응답 200, 최근 30일 기록 없음 또는 어댑터 정지)"})
     return hr, failures
+
+
+def fetch_scalar_one(tok, data_type):
+    """같은 slug 의 다른 dataType(dailyRevenue, dailyFees) 스칼라를 받는다. 귀속률(holders ÷ revenue) 계산용."""
+    url = C.LLAMA_FEES_SCALAR.replace("dataType=dailyHoldersRevenue", "dataType=" + data_type) \
+        .format(slug=urllib.parse.quote(tok["slug"], safe=""))
+    d = C.http_get_json(url)
+    return {k: d.get(k) for k in ("total24h", "total7d", "total30d", "total1y")}
+
+
+def fetch_scalars(tokens, data_type, kind):
+    """dailyRevenue / dailyFees 를 종목마다 받는다. 실패해도 주간 실행을 멈추지 않는다(귀속률은 보조 지표)."""
+    out, failures = {}, []
+    with cf.ThreadPoolExecutor(max_workers=C.HR_CONCURRENCY) as ex:
+        futs = {ex.submit(fetch_scalar_one, t, data_type): t for t in tokens}
+        for fut in cf.as_completed(futs):
+            t = futs[fut]
+            try:
+                out[t["t"]] = fut.result()
+            except Exception as e:
+                out[t["t"]] = None
+                failures.append({"t": t["t"], "kind": kind, "slug": t["slug"], "reason": str(e)})
+    return out, failures
 
 
 def _llama_prices(keys, batch_failures=None):
@@ -191,8 +216,10 @@ def main(argv=None):
     C.log(f"[fetch] {date} 종목 {len(tokens)}개")
 
     hr, hr_fail = fetch_hr(tokens)
+    rev, rev_fail = fetch_scalars(tokens, "dailyRevenue", "rev")
+    fees, fees_fail = fetch_scalars(tokens, "dailyFees", "fees")
     price, price_meta, price_fail = fetch_prices(tokens, hr)
-    failures = hr_fail + price_fail
+    failures = hr_fail + price_fail + rev_fail + fees_fail
 
     raw = {
         "date": date,
@@ -200,6 +227,8 @@ def main(argv=None):
         "universe_updated": universe.get("updated"),
         "count": len(tokens),
         "hr": {t["t"]: hr.get(t["t"]) for t in tokens},
+        "rev": rev,
+        "fees": fees,
         "price": price,
         "price_meta": price_meta,
         "failures": failures,
@@ -208,7 +237,8 @@ def main(argv=None):
 
     hr_ok = sum(1 for t in tokens if hr.get(t["t"]) and hr[t["t"]].get("total30d") is not None)
     price_ok = sum(1 for t in tokens if price.get(t["t"]) is not None)
-    C.log(f"[fetch] 귀속액 성공 {hr_ok}/{len(tokens)}, 가격 성공 {price_ok}/{len(tokens)}")
+    rev_ok = sum(1 for t in tokens if rev.get(t["t"]) and rev[t["t"]].get("total30d") is not None)
+    C.log(f"[fetch] 귀속액 성공 {hr_ok}/{len(tokens)}, 가격 성공 {price_ok}/{len(tokens)}, 매출(보조) {rev_ok}/{len(tokens)}")
     by_src = {}
     for t in tokens:
         m = price_meta.get(t["t"])

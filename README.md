@@ -63,11 +63,12 @@ adj = net                                        (net < 0, 계수 미적용 — 
 등급: S+ ≥12, S ≥8, A ≥5, B+ ≥3, B ≥1.5, C ≥0.4, D 그 미만(음수 포함).
 
 행 필드(아티팩트 페이지가 읽는 모양, 순서 고정): `t, n, slug, cg, mc, fdv, price, hr30, hr7, rr, raw, net, adj, g, inc, ver, acc, auto, stab, k{acc, auto, stab, dil, hist}, hist, note`.
-그 뒤에 선택 필드가 붙을 수 있다: `growth`(성장배수, 채점에는 쓰지 않음), `carried`·`carried_fields`(직전 값 사용), `stale_suspect`(직전 주와 hr30·hr7 동일).
+그 뒤에 선택 필드가 붙을 수 있다: `growth`(성장배수), `rev30`·`fees30`(DefiLlama 30일 프로토콜 수익·총수수료), `payout`(귀속률 % = hr30 ÷ rev30 × 100), `carried`·`carried_fields`(직전 값 사용), `stale_suspect`(직전 주와 hr30·hr7 동일). `growth`·`rev30`·`fees30`·`payout`은 채점에 쓰지 않는 보조 지표다.
 
 ## 수집 규칙 (6장, 보완 문서 1절)
 
 - 귀속액: `api.llama.fi/summary/fees/<slug>?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`. 동시 8개, 1·2·4초 백오프 3회. 주간 수집은 반드시 두 exclude 파라미터를 붙인다(백테스트만 뺀다).
+- 매출: 같은 주소에 `dataType=dailyRevenue`, `dailyFees` 로 프로토콜 수익과 총수수료도 받아 `rev30`·`fees30`·`payout`(귀속률)을 행에 넣는다. 보조 지표라 실패해도 종료 조건에 넣지 않는다(ASTER 처럼 수익 항목이 없는 어댑터는 비워 둔다).
 - `total30d` 가 `null` 로 오면(응답은 200) 수집 실패로 센다. 0 으로 바꾸지 않는다. 2026-10-10 기준 DODO 가 그렇다(어댑터 기록이 2026-08-29 에서 끝남).
 - 가격 순서: ① `coins.llama.fi/prices/current/coingecko:<cg>` (25개씩) → ② 빠진 종목은 DefiLlama 응답의 컨트랙트 주소로 `coins.llama.fi` 재조회 → ③ 그래도 없으면 CoinGecko `simple/price` 같은 id. 환경변수 `COINGECKO_API_KEY` 가 있으면 데모 키 헤더(`x-cg-demo-api-key`)로 보낸다. 키는 코드나 커밋에 넣지 않고 저장소 Secrets 에만 둔다.
 - 종료 조건: hr30 실패가 전체의 10% 초과 또는 가격 실패 3개 초과 → raw 파일을 쓴 뒤 `exit 1`. 워크플로가 실패로 끝나고 GitHub 가 이메일을 보낸다.
@@ -109,6 +110,7 @@ python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026
 ```
 python scripts/backtest.py --all            # T = 2026-04-01, 05-01, 06-01, 06-17, 07-01, H=90 → data/backtest/
 python scripts/backtest.py --T 2026-06-17   # 한 시점만
+python scripts/backtest_variants.py         # 산출식 변형(음수 규칙 없음, 배출 무시, 두 축)을 기준일 11개·기간 4종에서 비교 → data/backtest/variants.md
 ```
 
 창 정의: DefiLlama 의 `total30d` 는 기준일을 제외한 직전 30일 합계다(`audit_chart.py` 로 2026-10-10 확인). 백테스트도 같은 창을 쓴다.

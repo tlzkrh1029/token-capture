@@ -15,6 +15,7 @@ score.py : 채점. data/raw/<date>.json 과 data/universe.json 으로 스냅샷�
   * hr30·hr7 이 직전 주와 정확히 같으면(수집에 성공했는데도) "stale_suspect": true 를 넣고 로그와 latest.json 의 meta 에 적는다.
     둘 다 0 인 행(실현 0)은 같은 값이 당연하므로 제외한다. 주기형 목록 종목은 정상이어도 같은 값이 나올 수 있다.
   * growth = hr30 ÷ (hr1y ÷ ANN) 을 행에 기록한다(13장. 채점에는 쓰지 않는다).
+  * rev30·fees30(DefiLlama 30일 프로토콜 수익·총수수료)과 payout(귀속률 % = hr30 ÷ rev30 × 100)을 행에 기록한다(채점에는 쓰지 않는다).
 출력
   data/snapshots/<date>.json  {date, rows}
   data/latest.json            {date, rows, meta:{fetched_at, failures, universe_updated, count, ...}}
@@ -32,7 +33,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
 
-HISTORY_COLUMNS = ["date", "t", "adj", "g", "mc", "hr30", "hr7", "net", "raw", "price", "flags"]
+HISTORY_COLUMNS = ["date", "t", "adj", "g", "mc", "hr30", "hr7", "net", "raw", "price", "payout", "flags"]
 
 
 # ---------------------------------------------------------------------------
@@ -122,6 +123,16 @@ def recompute_inc(universe, price, date):
     return changed
 
 
+def payout_of(hr_row, rev_row):
+    """귀속률 % = 30일 귀속액 ÷ 30일 프로토콜 수익 × 100. 수익이 없거나 0 이면 None. (보조 지표, 채점에는 쓰지 않는다)"""
+    if not hr_row or not rev_row:
+        return None
+    h30, r30 = hr_row.get("total30d"), rev_row.get("total30d")
+    if h30 is None or not r30:
+        return None
+    return round(h30 / r30 * 100, 1)
+
+
 def growth_of(hr_row):
     """성장배수 g = total30d ÷ (total1y ÷ ANN). (13장) 계산할 수 없으면 None."""
     if not hr_row:
@@ -181,6 +192,11 @@ def build_rows(universe, raw, prev, date):
 
         row = score_one(tok, price, hr30, hr7, k_acc, k_auto, lumpy, bands)
         row["growth"] = growth_of(hr_row) if hr_ok else None
+        rev_row = (raw.get("rev") or {}).get(sym)
+        fees_row = (raw.get("fees") or {}).get(sym)
+        row["rev30"] = (rev_row or {}).get("total30d")
+        row["fees30"] = (fees_row or {}).get("total30d")
+        row["payout"] = payout_of(hr_row, rev_row) if hr_ok else None
         if carried_fields:
             row["carried"] = True
             row["carried_fields"] = carried_fields
@@ -229,7 +245,7 @@ def append_history(snapshot, path=C.HISTORY_PATH, seeded=False):
         flags = row_flags(dict(r, seeded=seeded))
         new.append({"date": date, "t": r["t"], "adj": r["adj"], "g": r["g"], "mc": r["mc"],
                     "hr30": r["hr30"], "hr7": r["hr7"], "net": r["net"], "raw": r["raw"],
-                    "price": r["price"], "flags": flags})
+                    "price": r["price"], "payout": ("" if r.get("payout") is None else r.get("payout")), "flags": flags})
     allrows = existing + new
     allrows.sort(key=lambda r: (r["date"], -float(r["adj"])))
     os.makedirs(os.path.dirname(path), exist_ok=True)

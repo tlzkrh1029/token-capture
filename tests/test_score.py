@@ -108,6 +108,12 @@ class ScoreMatchesReference(unittest.TestCase):
         self.assertEqual(by["VVV"]["inc_ref_date"], "2026-09-17")
         self.assertEqual(by["ETH"]["inc30"], 121.0)               # inc_qty30 없음 → 그대로
 
+    def test_payout_of(self):
+        self.assertEqual(S.payout_of({"total30d": 5e6}, {"total30d": 1e7}), 50.0)
+        self.assertIsNone(S.payout_of({"total30d": 5e6}, {"total30d": 0}))
+        self.assertIsNone(S.payout_of({"total30d": 5e6}, None))
+        self.assertIsNone(S.payout_of({"total30d": None}, {"total30d": 1e7}))
+
     def test_second_week_rule(self):
         """직전 스냅샷이 7일 미만 전이면 carried 재실패를 '2주 연속'으로 세지 않는다."""
         uni = {"formula": self.universe["formula"],
