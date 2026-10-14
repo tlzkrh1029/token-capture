@@ -33,7 +33,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
 
-HISTORY_COLUMNS = ["date", "t", "adj", "g", "mc", "hr30", "hr7", "net", "raw", "price", "payout", "flags"]
+HISTORY_COLUMNS = ["date", "t", "adj", "g", "mc", "hr30", "hr7", "net", "raw", "price", "payout", "adjg", "flags"]
 
 
 # ---------------------------------------------------------------------------
@@ -197,6 +197,10 @@ def build_rows(universe, raw, prev, date):
         row["rev30"] = (rev_row or {}).get("total30d")
         row["fees30"] = (fees_row or {}).get("total30d")
         row["payout"] = payout_of(hr_row, rev_row) if hr_ok else None
+        # 배출 차감 전 조정 캡처율(원시 캡처율 × 다섯 계수)과 그 등급. 배출(희석)과 캡처(귀속 강도)를 따로 보기 위한 보조 지표다.
+        k = row["k"]
+        row["adjg"] = round(row["raw"] * k["acc"] * k["auto"] * k["stab"] * k["dil"] * k["hist"], 3)
+        row["gg"] = grade(row["adjg"], bands)
         if carried_fields:
             row["carried"] = True
             row["carried_fields"] = carried_fields
@@ -245,7 +249,8 @@ def append_history(snapshot, path=C.HISTORY_PATH, seeded=False):
         flags = row_flags(dict(r, seeded=seeded))
         new.append({"date": date, "t": r["t"], "adj": r["adj"], "g": r["g"], "mc": r["mc"],
                     "hr30": r["hr30"], "hr7": r["hr7"], "net": r["net"], "raw": r["raw"],
-                    "price": r["price"], "payout": ("" if r.get("payout") is None else r.get("payout")), "flags": flags})
+                    "price": r["price"], "payout": ("" if r.get("payout") is None else r.get("payout")),
+                    "adjg": ("" if r.get("adjg") is None else r.get("adjg")), "flags": flags})
     allrows = existing + new
     allrows.sort(key=lambda r: (r["date"], -float(r["adj"])))
     os.makedirs(os.path.dirname(path), exist_ok=True)

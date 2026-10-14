@@ -63,7 +63,7 @@ adj = net                                        (net < 0, 계수 미적용 — 
 등급: S+ ≥12, S ≥8, A ≥5, B+ ≥3, B ≥1.5, C ≥0.4, D 그 미만(음수 포함).
 
 행 필드(아티팩트 페이지가 읽는 모양, 순서 고정): `t, n, slug, cg, mc, fdv, price, hr30, hr7, rr, raw, net, adj, g, inc, ver, acc, auto, stab, k{acc, auto, stab, dil, hist}, hist, note`.
-그 뒤에 선택 필드가 붙을 수 있다: `growth`(성장배수), `rev30`·`fees30`(DefiLlama 30일 프로토콜 수익·총수수료), `payout`(귀속률 % = hr30 ÷ rev30 × 100), `carried`·`carried_fields`(직전 값 사용), `stale_suspect`(직전 주와 hr30·hr7 동일). `growth`·`rev30`·`fees30`·`payout`은 채점에 쓰지 않는 보조 지표다.
+그 뒤에 선택 필드가 붙을 수 있다: `growth`(성장배수), `rev30`·`fees30`(DefiLlama 30일 프로토콜 수익·총수수료), `payout`(귀속률 % = hr30 ÷ rev30 × 100), `carried`·`carried_fields`(직전 값 사용), `stale_suspect`(직전 주와 hr30·hr7 동일). `growth`·`rev30`·`fees30`·`payout`은 채점에 쓰지 않는 보조 지표다. 2026-10-14부터 `adjg`(배출 차감 전 조정 캡처율 = 원시 캡처율 × 다섯 계수)와 그 등급 `gg` 도 붙는다. 배출을 차감한 순 캡처율이 음수이면 계수를 적용하지 않는 규칙 때문에 배출이 큰 종목은 D 로 몰리므로, 귀속 강도(배출 전)와 희석(배출 후)을 따로 읽기 위한 보조 지표다. `history.csv` 에도 `adjg` 열이 있다.
 
 ## 수집 규칙 (6장, 보완 문서 1절)
 
@@ -73,7 +73,7 @@ adj = net                                        (net < 0, 계수 미적용 — 
 - 가격 순서: ① `coins.llama.fi/prices/current/coingecko:<cg>` (25개씩) → ② 빠진 종목은 DefiLlama 응답의 컨트랙트 주소로 `coins.llama.fi` 재조회 → ③ 그래도 없으면 CoinGecko `simple/price` 같은 id. 환경변수 `COINGECKO_API_KEY` 가 있으면 데모 키 헤더(`x-cg-demo-api-key`)로 보낸다. 키는 코드나 커밋에 넣지 않고 저장소 Secrets 에만 둔다.
 - 종료 조건: hr30 실패가 전체의 10% 초과 또는 가격 실패 3개 초과 → raw 파일을 쓴 뒤 `exit 1`. 워크플로가 실패로 끝나고 GitHub 가 이메일을 보낸다.
 - 실패 종목은 score.py 가 직전 스냅샷 값을 쓰고 `carried: true`, `carried_fields` 를 넣는다. 같은 필드가 2주 연속 실패하면 행을 만들지 않고 `latest.json` 의 `meta.failures` 에 남긴다. "2주 연속"은 직전 스냅샷이 7일 이상 전일 때만 성립하며, 같은 주의 재실행(하루 이틀 뒤 수동 실행)은 같은 실패로 보고 다시 carried 로 둔다.
-- `inc_qty30` 이 있는 종목(NEAR, VVV)은 매주 `inc30 = inc_qty30 × 그날 가격 ÷ 1e6` 으로 다시 계산하고 `universe.json` 의 `inc30`, `inc_ref_price`, `inc_ref_date`, `updated` 를 갱신해 함께 커밋한다.
+- `inc_qty30` 이 있는 종목(2026-10-14 리서치 이후 42종목)은 매주 `inc30 = inc_qty30 × 그날 가격 ÷ 1e6` 으로 다시 계산하고 `universe.json` 의 `inc30`, `inc_ref_price`, `inc_ref_date`, `updated` 를 갱신해 함께 커밋한다.
 - `stale_suspect`: 수집에 성공했는데 hr30·hr7 이 직전 스냅샷과 정확히 같으면 표시한다(둘 다 0 인 "실현 0" 행은 제외). 주기형 목록 종목은 정상이어도 같을 수 있다. 워크플로는 실패시키지 않는다.
 
 ## 운영 절차
@@ -104,6 +104,8 @@ python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026
 ### 격주 리서치 (11-3절, Claude 가 수행)
 
 신규 종목 발굴, `acc/auto/hist_k/note` 수정, `circ`·`fdv` 갱신, `inc_qty30` 이 없는 종목의 `inc30` 재조사. 결과를 `data/universe.json` 에 커밋하고 `updated` 를 올린다. 브리지가 다음 주에 `meta/universe` 를 따라 갱신한다.
+
+2026-10-13 리서치(`docs/research-2026-10-13.md`)부터 종목마다 설명 필드가 붙는다: `sector`, `policy`(재원 기준·홀더 귀속 비율·목적지·집행·주기·개시일·최근 6개월 변경·DefiLlama 집계 정의·출처·신뢰도), `unlocks`(향후 6개월), `flags`(주의 사항), `inc_method`·`inc_confidence`(배출 수량의 산정 방법과 신뢰도), `research_date`. 배출 수량 규칙은 `formula.inc_lumpy` 에 있다: 신뢰도 high·medium 만 `inc_qty30` 으로 차감하고, low 는 `inc_qty30_est` 에만 둔다. 배출이 비선형인 종목(HYPE)은 최근 수회 평균 평활값을 `inc_qty30` 으로 쓰고 이번 창 실측은 `inc_qty30_window` 에 둔다. 채점에 직접 영향을 주는 `acc`·`auto` 변경과 신규 종목 편입은 보고서 4-2절·5절의 승인 대기 표에 있고, 승인 전에는 반영하지 않는다.
 
 ### 백테스트 (12장)
 
