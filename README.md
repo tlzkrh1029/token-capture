@@ -37,6 +37,7 @@ data/raw/                  수집 원본 (감사용, 그대로 보존)
 data/snapshots/            채점 결과 {date, rows}  (아티팩트 행 형식)
 data/latest.json           최신 스냅샷 + meta (브리지가 읽음)
 data/history.csv           날짜별 평탄 파일
+artifact/index.html        대시보드 아티팩트(https://claude.ai/artifact/YQg1tsjpAD2WnYjTpxsxfQ)의 페이지 원본. boot.js 는 artifact/gen_boot.py 로 latest.json·universe.json 에서 만들어 함께 올린다
 data/backtest/             백테스트 결과 <T>.json 과 summary.md
 ```
 
