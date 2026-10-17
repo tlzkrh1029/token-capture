@@ -8,7 +8,7 @@
 ## 구조
 
 ```
-GitHub Actions (.github/workflows/weekly.yml, 토요일 09:00 UTC = 18:00 KST, Claude 사용량 0)
+GitHub Actions (.github/workflows/weekly.yml, 토요일 09:17 UTC = 18:17 KST, 보충 실행 10:02 UTC = 19:02 KST, Claude 사용량 0)
   scripts/fetch.py  ──▶ api.llama.fi(귀속액) · coins.llama.fi(가격) 직접 호출 → data/raw/YYYY-MM-DD.json
   scripts/score.py  ──▶ data/universe.json 으로 채점 → data/snapshots/YYYY-MM-DD.json, data/latest.json, data/history.csv
   commit            ──▶ data/ 를 저장소에 커밋
@@ -91,7 +91,7 @@ python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026
 
 ### 첫 실행 검증 (14장)
 
-1. Actions 탭에서 `tokencapture-weekly` 를 **Run workflow** 로 수동 실행한다.
+1. Actions 탭에서 `tokencapture-weekly` 를 **Run workflow** 로 수동 실행한다. 오늘(UTC) 스냅샷이 이미 커밋돼 있으면 건너뛰므로, 다시 수집하려면 `force` 입력을 켠다.
 2. 로그: `귀속액 성공 N/46`, `가격 성공 46/46`, 실패 목록, 등급 변동 목록. 행 수는 46 이어야 한다(보완 문서 1절. STONK 는 CoinGecko id 가 `stonk-3` 으로 바뀌어 이제 `coins.llama.fi` 에서 가격이 나온다). 2026-10-10 기준 DODO 는 `total30d` 가 `null` 이라 직전 값을 쓴 `carried` 행으로 들어간다. 이 상태가 직전 스냅샷보다 7일 이상 지난 실행에서도 이어지면 그때는 DODO 가 빠져 45행이 되고 `meta.failures` 에 "2주 연속 실패"로 남는다.
 3. `data/snapshots/<오늘>.json` 의 행 수 46, 필드 전부 존재, `rows[0]` 이 `adj` 최댓값.
 4. 값 대조: NEAR `hr30` 은 백만 달러대(`near-intents`)여야 하고 수만 달러대면 체인 slug 를 잘못 쓴 것이다. 음수 종목(ETH, CRV, SOL, CC, VELO, VVV, NEAR 등)은 `adj` 와 `net` 이 같아야 한다.
@@ -100,7 +100,7 @@ python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026
 
 ### 매주
 
-워크플로가 토요일에 돈다. 실패 이메일이 오면 Actions 로그의 `[fetch] 실패` 줄을 본다. 재실행은 Run workflow. 같은 날 두 번 돌아도 같은 파일을 덮어쓰므로 중복 데이터 점은 생기지 않는다.
+워크플로가 토요일 18:17 KST 에 돌고, 19:02 KST 에 보충 실행이 한 번 더 예약되어 있다. 보충 실행은 오늘 스냅샷이 이미 커밋돼 있으면 `check` 단계에서 건너뛴다. 정각 예약은 GitHub 혼잡으로 지연되거나 통째로 빠질 수 있어(2026-10-17 첫 예약 실행이 기록 없이 빠졌다) 분 값을 정각에서 비켜 두었다. 실패 이메일이 오면 Actions 로그의 `[fetch] 실패` 줄을 본다. 재실행은 Run workflow(`force` 켜기). 같은 날 두 번 돌아도 같은 파일을 덮어쓰므로 중복 데이터 점은 생기지 않는다. 브리지(토 19:30 KST)가 "GitHub 쪽이 이번 주 실행을 못 했다"고 알리면 Run workflow 로 수동 실행한 뒤 브리지를 다시 실행한다.
 
 ### 격주 리서치 (11-3절, Claude 가 수행)
 

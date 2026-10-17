@@ -5,11 +5,11 @@ claude.ai 예약 작업 `토큰캡처 주간 갱신` (`trig_01VBieQsYUtDeQzELqVa
 
 ---
 
-토큰캡처 등급표 아티팩트를 GitHub 저장소의 최신 스냅샷으로 갱신하는 주간 브리지 작업입니다. 수집과 채점은 GitHub Actions(저장소 tlzkrh1029/token-capture, 토요일 18:00 KST)가 이미 끝냈으므로, 이 작업은 결과 파일 하나를 읽어 아티팩트 저장소에 넣기만 합니다. WebFetch 로 수치를 수집하거나 값을 다시 계산하지 않습니다. 무인 실행이므로 질문하지 말고 끝까지 진행합니다.
+토큰캡처 등급표 아티팩트를 GitHub 저장소의 최신 스냅샷으로 갱신하는 주간 브리지 작업입니다. 수집과 채점은 GitHub Actions(저장소 tlzkrh1029/token-capture, 토요일 18:17 KST, 보충 실행 19:02 KST)가 이미 끝냈으므로, 이 작업은 결과 파일 하나를 읽어 아티팩트 저장소에 넣기만 합니다. WebFetch 로 수치를 수집하거나 값을 다시 계산하지 않습니다. 무인 실행이므로 질문하지 말고 끝까지 진행합니다.
 
-1. 파일 받기. Bash 로 `curl -sSL https://raw.githubusercontent.com/tlzkrh1029/token-capture/main/data/latest.json -o /tmp/latest.json` 을 실행합니다. 실패하면(404, 네트워크 오류) "GitHub 저장소에서 latest.json 을 읽지 못했다"고 보고하고 끝냅니다.
+1. 파일 받기. Bash 로 `curl -sSL https://raw.githubusercontent.com/tlzkrh1029/token-capture/main/data/latest.json -o /tmp/latest.json` 을 실행합니다. 명령이 거부되거나 실패하면 같은 명령을 한 번 더 실행하고, 그래도 안 되면 `python3 -c "import urllib.request; urllib.request.urlretrieve('https://raw.githubusercontent.com/tlzkrh1029/token-capture/main/data/latest.json', '/tmp/latest.json')"` 로 받습니다. 그래도 실패하면(404, 네트워크 오류) "GitHub 저장소에서 latest.json 을 읽지 못했다"고 보고하고 끝냅니다.
 
-2. 신선도 확인. `/tmp/latest.json` 의 `date` 가 오늘(KST) 또는 어제가 아니면 "GitHub 쪽이 이번 주 실행을 못 했다(마지막 date …)"고 보고하고 끝냅니다. 아티팩트 저장소에는 아무것도 쓰지 않습니다.
+2. 신선도 확인. `/tmp/latest.json` 의 `date` 가 오늘(KST) 또는 어제가 아니면 "GitHub 쪽이 이번 주 실행을 못 했다(마지막 date …)"고 보고하고 끝냅니다. 아티팩트 저장소에는 아무것도 쓰지 않습니다. 보고에는 "GitHub 의 Actions 탭에서 tokencapture-weekly 를 Run workflow 로 수동 실행한 뒤 이 작업을 다시 실행하면 된다"는 안내를 덧붙입니다.
 
 3. 중복 확인. 아티팩트 `https://claude.ai/artifact/YQg1tsjpAD2WnYjTpxsxfQ` 의 저장소에서 ArtifactData(read_db) 로 `meta/state` 를 읽습니다. `lastWeekly` 가 `/tmp/latest.json` 의 `date` 와 같으면 "이미 반영됨"이라고 보고하고 끝냅니다.
 

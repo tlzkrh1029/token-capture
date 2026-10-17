@@ -1,8 +1,14 @@
 name: tokencapture-weekly
 on:
   schedule:
-    - cron: "0 9 * * 6"        # 토요일 09:00 UTC = 18:00 KST (GitHub 혼잡 시 수십 분 지연 가능)
-  workflow_dispatch:           # 첫 실행 검증과 수동 재실행용
+    - cron: "17 9 * * 6"        # 토요일 09:17 UTC = 18:17 KST. 정각(:00)은 GitHub 혼잡으로 지연·누락이 잦아 피한다
+    - cron: "2 10 * * 6"        # 토요일 10:02 UTC = 19:02 KST 보충 실행. 오늘 스냅샷이 이미 커밋돼 있으면 건너뛴다
+  workflow_dispatch:            # 수동 실행. 오늘 스냅샷이 이미 있으면 건너뛰므로, 다시 수집하려면 force 를 켠다
+    inputs:
+      force:
+        description: "오늘 스냅샷이 이미 있어도 다시 수집·채점한다"
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -12,16 +18,32 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - name: check
+        id: check
+        env:
+          FORCE: ${{ inputs.force }}
+        run: |
+          today=$(date -u +%F)
+          if [ -f "data/snapshots/${today}.json" ] && [ "$FORCE" != "true" ]; then
+            echo "done=true" >> "$GITHUB_OUTPUT"
+            echo "오늘(${today}) 스냅샷이 이미 커밋돼 있어 건너뜁니다 (force 입력으로 다시 실행할 수 있습니다)"
+          else
+            echo "done=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-python@v6
+        if: steps.check.outputs.done != 'true'
         with: { python-version: "3.12" }
       - name: fetch
+        if: steps.check.outputs.done != 'true'
         env:
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}   # 비어 있으면 키 없이 호출한다 (HANDOVER-ADDENDUM 1절)
         run: python scripts/fetch.py
       - name: score
+        if: steps.check.outputs.done != 'true'
         run: python scripts/score.py
       - name: commit
+        if: steps.check.outputs.done != 'true'
         run: |
           git config user.name "tokencapture-bot"
           git config user.email "bot@users.noreply.github.com"
