@@ -1,0 +1,1870 @@
+{
+ "date": "2026-10-17",
+ "fetched_at": "2026-10-17T11:07:05Z",
+ "universe_updated": "2026-10-14",
+ "count": 46,
+ "hr": {
+  "HYPE": {
+   "total24h": 2422551,
+   "total48hto24h": 3464883,
+   "total7d": 16156354,
+   "total30d": 71048901,
+   "total1y": 691415915,
+   "annualized1y": 691415915,
+   "totalAllTime": 1351677698,
+   "slug": "hyperliquid",
+   "name": "Hyperliquid",
+   "gecko_id": "hyperliquid",
+   "address": "hyperliquid:0x0d01dc56dcaaca66ad901c959b4011ec",
+   "chains": [
+    "Hyperliquid L1"
+   ]
+  },
+  "CC": {
+   "total24h": 1734855,
+   "total48hto24h": 1864894,
+   "total7d": 12159293,
+   "total30d": 48857312,
+   "total1y": 613513201,
+   "annualized1y": 613513201,
+   "totalAllTime": 652888236,
+   "slug": "canton",
+   "name": "Canton",
+   "gecko_id": "canton-network",
+   "address": null,
+   "chains": [
+    "Canton"
+   ]
+  },
+  "TRX": {
+   "total24h": 956285,
+   "total48hto24h": 1006320,
+   "total7d": 5841965,
+   "total30d": 23916676,
+   "total1y": 341290727,
+   "annualized1y": 341290727,
+   "totalAllTime": 1812865539,
+   "slug": "tron",
+   "name": "Tron",
+   "gecko_id": "tron",
+   "address": null,
+   "chains": [
+    "Tron"
+   ]
+  },
+  "PUMP": {
+   "total24h": 961144,
+   "total48hto24h": 905409,
+   "total7d": 6585447,
+   "total30d": 30526751,
+   "total1y": 284606543,
+   "annualized1y": 284606543,
+   "totalAllTime": 389309792,
+   "slug": "pump",
+   "name": "Pump",
+   "gecko_id": "pump-fun",
+   "address": "solana:pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+   "chains": [
+    "Solana",
+    "Ethereum",
+    "BSC",
+    "Base"
+   ]
+  },
+  "UNI": {
+   "total24h": 292171,
+   "total48hto24h": 316953,
+   "total7d": 1705732,
+   "total30d": 9560145,
+   "total1y": 57513463,
+   "annualized1y": 71891828.75,
+   "totalAllTime": 57760804,
+   "slug": "uniswap",
+   "name": "Uniswap",
+   "gecko_id": "uniswap",
+   "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+   "chains": [
+    "Ethereum",
+    "Arbitrum",
+    "OP Mainnet",
+    "Polygon",
+    "Celo",
+    "BSC",
+    "ZKsync Era",
+    "Sei",
+    "Taiko",
+    "Scroll",
+    "Rootstock",
+    "Filecoin",
+    "Boba",
+    "Moonbeam",
+    "Manta",
+    "Mantle",
+    "Linea",
+    "Avalanche",
+    "Base",
+    "Zora",
+    "Blast",
+    "Polygon zkEVM",
+    "Gnosis",
+    "BOB",
+    "Lisk",
+    "Corn",
+    "Unichain",
+    "World Chain",
+    "Ink",
+    "Soneium",
+    "Hemi",
+    "Saga",
+    "LightLink",
+    "GOAT",
+    "XDC",
+    "Lens",
+    "Telos",
+    "Nibiru",
+    "Plasma",
+    "Monad",
+    "Etherlink",
+    "Sonic",
+    "X Layer",
+    "Tempo",
+    "Robinhood Chain",
+    "0G",
+    "MegaETH",
+    "Arc",
+    "Redbelly"
+   ]
+  },
+  "AERO": {
+   "total24h": 245438,
+   "total48hto24h": 328475,
+   "total7d": 1902793,
+   "total30d": 8040222,
+   "total1y": 88047436,
+   "annualized1y": 88047436,
+   "totalAllTime": 488067230,
+   "slug": "aerodrome",
+   "name": "Aerodrome",
+   "gecko_id": "aerodrome-finance",
+   "address": "base:0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+   "chains": [
+    "Base",
+    "Arc"
+   ]
+  },
+  "PONS": {
+   "total24h": 103303,
+   "total48hto24h": 35211,
+   "total7d": 1203260,
+   "total30d": 5761232,
+   "total1y": 22805448,
+   "annualized1y": 87620931.78947368,
+   "totalAllTime": 22805448,
+   "slug": "pons",
+   "name": "Pons",
+   "gecko_id": "pons",
+   "address": "robinhood:0x39dbed3a2bd333467115de45665cc57f813c4571",
+   "chains": [
+    "Robinhood Chain"
+   ]
+  },
+  "STONK": {
+   "total24h": 112159,
+   "total48hto24h": 94603,
+   "total7d": 631585,
+   "total30d": 12522607,
+   "total1y": 21011924,
+   "annualized1y": 102258030.13333334,
+   "totalAllTime": 21011924,
+   "slug": "stonkfun",
+   "name": "StonkFun",
+   "gecko_id": "stonk-3",
+   "address": "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "CAKE": {
+   "total24h": 79329.63,
+   "total48hto24h": 101069.53,
+   "total7d": 549624.83,
+   "total30d": 3247155.4700000007,
+   "total1y": 43895164.84999999,
+   "annualized1y": 43895164.84999999,
+   "totalAllTime": 311258406.53000027,
+   "slug": "pancakeswap",
+   "name": "PancakeSwap",
+   "gecko_id": "pancakeswap-token",
+   "address": "bsc:0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+   "chains": [
+    "BSC",
+    "Ethereum",
+    "Polygon zkEVM",
+    "ZKsync Era",
+    "Arbitrum",
+    "Linea",
+    "Base",
+    "OpBNB",
+    "Aptos",
+    "Solana",
+    "Monad",
+    "Robinhood Chain"
+   ]
+  },
+  "ASTER": {
+   "total24h": 142535,
+   "total48hto24h": 111120,
+   "total7d": 649658,
+   "total30d": 3215409,
+   "total1y": 27722046,
+   "annualized1y": 37476099.222222224,
+   "totalAllTime": 27868033,
+   "slug": "aster",
+   "name": "Aster",
+   "gecko_id": "aster-2",
+   "address": "bsc:0x000ae314e2a2172a039b26378814c252734f556a",
+   "chains": [
+    "Off Chain",
+    "BSC",
+    "Aster"
+   ]
+  },
+  "SKY": {
+   "total24h": 183764,
+   "total48hto24h": 186506,
+   "total7d": 1311411,
+   "total30d": 5859336,
+   "total1y": 58653024,
+   "annualized1y": 58653024,
+   "totalAllTime": 171145425,
+   "slug": "sky",
+   "name": "Sky",
+   "gecko_id": "sky",
+   "address": "0x56072c95faa701256059aa122697b133aded9279",
+   "chains": [
+    "Ethereum"
+   ]
+  },
+  "JUP": {
+   "total24h": 36631.57,
+   "total48hto24h": 80464,
+   "total7d": 417259.29000000004,
+   "total30d": 2579431.97,
+   "total1y": 38492640.55,
+   "annualized1y": 38492640.55,
+   "totalAllTime": 102549436.21000005,
+   "slug": "jupiter",
+   "name": "Jupiter",
+   "gecko_id": "jupiter-exchange-solana",
+   "address": "solana:JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "LIT": {
+   "total24h": 104562,
+   "total48hto24h": 121231,
+   "total7d": 681516,
+   "total30d": 2766401,
+   "total1y": 30541752,
+   "annualized1y": 39114875.368421055,
+   "totalAllTime": 30541752,
+   "slug": "lighter",
+   "name": "Lighter",
+   "gecko_id": "lighter",
+   "address": "ethereum:0x232ce3bd40fcd6f80f3d55a522d03f25df784ee2",
+   "chains": [
+    "ZkLighter",
+    "Robinhood Chain"
+   ]
+  },
+  "ETH": {
+   "total24h": 52394,
+   "total48hto24h": 112160,
+   "total7d": 530983,
+   "total30d": 6509810,
+   "total1y": 49900299,
+   "annualized1y": 49900299,
+   "totalAllTime": 13133652169,
+   "slug": "ethereum",
+   "name": "Ethereum",
+   "gecko_id": "ethereum",
+   "address": null,
+   "chains": [
+    "Ethereum"
+   ]
+  },
+  "RAY": {
+   "total24h": 55613,
+   "total48hto24h": 61270,
+   "total7d": 330598,
+   "total30d": 3166057,
+   "total1y": 18350560,
+   "annualized1y": 18350560,
+   "totalAllTime": 66571408,
+   "slug": "raydium",
+   "name": "Raydium",
+   "gecko_id": "raydium",
+   "address": "solana:4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "ORE": {
+   "total24h": 109818,
+   "total48hto24h": 129986,
+   "total7d": 949990,
+   "total30d": 3388043,
+   "total1y": 42147953,
+   "annualized1y": 42380173.12672176,
+   "totalAllTime": 42147953,
+   "slug": "ore-protocol",
+   "name": "ORE Protocol",
+   "gecko_id": "ore",
+   "address": "solana:oreoU2P8bN6jkk3jbaiVxYnG1dCXcYxwhwyK9jSybcp",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "SOL": {
+   "total24h": 114102,
+   "total48hto24h": 115985,
+   "total7d": 798671,
+   "total30d": 3386461,
+   "total1y": 27192543,
+   "annualized1y": 27192543,
+   "totalAllTime": 592851608,
+   "slug": "solana",
+   "name": "Solana",
+   "gecko_id": "solana",
+   "address": null,
+   "chains": [
+    "Solana"
+   ]
+  },
+  "BNB": {
+   "total24h": 52369,
+   "total48hto24h": 44148,
+   "total7d": 279460,
+   "total30d": 1678157,
+   "total1y": 17647703,
+   "annualized1y": 17647703,
+   "totalAllTime": 28345605,
+   "slug": "bsc",
+   "name": "BSC",
+   "gecko_id": "binancecoin",
+   "address": null,
+   "chains": [
+    "BSC"
+   ]
+  },
+  "BONK": {
+   "total24h": 18689.73,
+   "total48hto24h": 16854,
+   "total7d": 170848.62000000002,
+   "total30d": 4426331.410000001,
+   "total1y": 13291482.25,
+   "annualized1y": 13291482.25,
+   "totalAllTime": 43464663.56999996,
+   "slug": "bonk.fun",
+   "name": "BONK.fun",
+   "gecko_id": "bonk",
+   "address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "SPK": {
+   "total24h": 9729,
+   "total48hto24h": 10733,
+   "total7d": 75465,
+   "total30d": 552085,
+   "total1y": 3917239,
+   "annualized1y": 6298644.207048458,
+   "totalAllTime": 3927935,
+   "slug": "spark",
+   "name": "Spark",
+   "gecko_id": "spark-2",
+   "address": "0xc20059e0317de91738d13af027dfc4a50781b066",
+   "chains": [
+    "Gnosis",
+    "Ethereum"
+   ]
+  },
+  "NEAR": {
+   "total24h": 45044,
+   "total48hto24h": 162932,
+   "total7d": 569792,
+   "total30d": 2466183,
+   "total1y": 6603707.05,
+   "annualized1y": 10213360.47987288,
+   "totalAllTime": 6603707.05,
+   "slug": "near-intents",
+   "name": "NEAR Intents",
+   "gecko_id": null,
+   "address": null,
+   "chains": [
+    "Near"
+   ]
+  },
+  "CRV": {
+   "total24h": 12297,
+   "total48hto24h": 16485,
+   "total7d": 555468,
+   "total30d": 1838352,
+   "total1y": 27079756,
+   "annualized1y": 27079756,
+   "totalAllTime": 313364376,
+   "slug": "curve-finance",
+   "name": "Curve Finance",
+   "gecko_id": "curve-dao-token",
+   "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+   "chains": [
+    "Ethereum",
+    "Polygon",
+    "OP Mainnet",
+    "Gnosis",
+    "Fantom",
+    "Arbitrum",
+    "Avalanche",
+    "Base",
+    "Celo",
+    "Mantle",
+    "BSC",
+    "Fraxtal",
+    "Sonic",
+    "Ink",
+    "Hyperliquid L1",
+    "Plasma",
+    "Unichain",
+    "Monad",
+    "Stable",
+    "Robinhood Chain",
+    "Etherlink"
+   ]
+  },
+  "CVX": {
+   "total24h": 2398,
+   "total48hto24h": 3693,
+   "total7d": 362333,
+   "total30d": 881366,
+   "total1y": 12331658,
+   "annualized1y": 12331658,
+   "totalAllTime": 175730954,
+   "slug": "convex-finance",
+   "name": "Convex Finance",
+   "gecko_id": "convex-finance",
+   "address": "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b",
+   "chains": [
+    "Ethereum"
+   ]
+  },
+  "PENDLE": {
+   "total24h": 19508,
+   "total48hto24h": 47160,
+   "total7d": 104208,
+   "total30d": 362537,
+   "total1y": 11312759,
+   "annualized1y": 11312759,
+   "totalAllTime": 56731896,
+   "slug": "pendle",
+   "name": "Pendle",
+   "gecko_id": "pendle",
+   "address": "0x808507121b80c02388fad14726482e061b8da827",
+   "chains": [
+    "Arbitrum",
+    "Ethereum",
+    "BSC",
+    "OP Mainnet",
+    "Mantle",
+    "Base",
+    "Berachain",
+    "Sonic",
+    "Hyperliquid L1",
+    "Plasma",
+    "Monad",
+    "X Layer",
+    "Robinhood Chain"
+   ]
+  },
+  "VELO": {
+   "total24h": 13907.48,
+   "total48hto24h": 15861.28,
+   "total7d": 109467.41,
+   "total30d": 419525.20999999996,
+   "total1y": 5494955.65,
+   "annualized1y": 5494955.65,
+   "totalAllTime": 46821747.66999998,
+   "slug": "velodrome",
+   "name": "Velodrome",
+   "gecko_id": "velodrome-finance",
+   "address": "optimism:0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db",
+   "chains": [
+    "OP Mainnet",
+    "Lisk",
+    "Mode",
+    "Fraxtal",
+    "BOB",
+    "Unichain",
+    "Soneium",
+    "Ink",
+    "Swellchain",
+    "Celo"
+   ]
+  },
+  "ORCA": {
+   "total24h": 9889,
+   "total48hto24h": 14733,
+   "total7d": 76438,
+   "total30d": 450347,
+   "total1y": 2050261,
+   "annualized1y": 2061557.2038567492,
+   "totalAllTime": 5404598,
+   "slug": "orca",
+   "name": "Orca",
+   "gecko_id": "orca",
+   "address": "solana:orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+   "chains": [
+    "Solana",
+    "Eclipse"
+   ]
+  },
+  "RAIL": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 222261,
+   "total1y": 1713752.01,
+   "annualized1y": 1713752.01,
+   "totalAllTime": 2958244.01,
+   "slug": "railgun",
+   "name": "Railgun",
+   "gecko_id": "railgun",
+   "address": "0xe76c6c83af64e4c60245d8c7de953df673a7a33d",
+   "chains": [
+    "Ethereum",
+    "Arbitrum",
+    "Polygon",
+    "BSC"
+   ]
+  },
+  "INJ": {
+   "total24h": 8050,
+   "total48hto24h": 8048,
+   "total7d": 56282,
+   "total30d": 237024,
+   "total1y": 3570622,
+   "annualized1y": 3570622,
+   "totalAllTime": 39321772,
+   "slug": "injective",
+   "name": "Injective",
+   "gecko_id": "injective-protocol",
+   "address": null,
+   "chains": [
+    "Injective"
+   ]
+  },
+  "XVS": {
+   "total24h": 1526,
+   "total48hto24h": 1616,
+   "total7d": 11527,
+   "total30d": 256976,
+   "total1y": 1796317,
+   "annualized1y": 1796317,
+   "totalAllTime": 29156602,
+   "slug": "venus",
+   "name": "Venus",
+   "gecko_id": "venus",
+   "address": "bsc:0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63",
+   "chains": [
+    "BSC",
+    "Ethereum",
+    "OpBNB",
+    "Arbitrum",
+    "ZKsync Era",
+    "Base",
+    "OP Mainnet",
+    "Unichain"
+   ]
+  },
+  "SYRUP": {
+   "total24h": 3008,
+   "total48hto24h": 401,
+   "total7d": 21418,
+   "total30d": 133552,
+   "total1y": 2903051,
+   "annualized1y": 2903051,
+   "totalAllTime": 5043043.25,
+   "slug": "maple-finance",
+   "name": "Maple Finance",
+   "gecko_id": "syrup",
+   "address": "0x643c4e15d7d62ad0abec4a9bd4b001aa3ef52d66",
+   "chains": [
+    "Ethereum",
+    "Off Chain"
+   ]
+  },
+  "MPLX": {
+   "total24h": 500,
+   "total48hto24h": 1357,
+   "total7d": 12943,
+   "total30d": 89190,
+   "total1y": 2494072,
+   "annualized1y": 2494072,
+   "totalAllTime": 24812901,
+   "slug": "metaplex",
+   "name": "Metaplex",
+   "gecko_id": "metaplex",
+   "address": "solana:METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "VVS": {
+   "total24h": 686,
+   "total48hto24h": 3039,
+   "total7d": 12188,
+   "total30d": 42370,
+   "total1y": 407824,
+   "annualized1y": 407824,
+   "totalAllTime": 4813553,
+   "slug": "vvs-finance",
+   "name": "VVS Finance",
+   "gecko_id": "vvs-finance",
+   "address": "cronos:0x2D03bECE6747ADC00E1a131BBA1469C15fD11e03",
+   "chains": [
+    "Cronos"
+   ]
+  },
+  "DEEP": {
+   "total24h": 352,
+   "total48hto24h": 379,
+   "total7d": 3210,
+   "total30d": 13734,
+   "total1y": 124258,
+   "annualized1y": 321660.78014184395,
+   "totalAllTime": 124258,
+   "slug": "deepbook",
+   "name": "DeepBook",
+   "gecko_id": "deep",
+   "address": "sui:0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP",
+   "chains": [
+    "Sui"
+   ]
+  },
+  "DODO": {
+   "total24h": null,
+   "total48hto24h": null,
+   "total7d": null,
+   "total30d": null,
+   "total1y": 158619,
+   "annualized1y": 596865.3092783506,
+   "totalAllTime": 158619,
+   "slug": "dodo",
+   "name": "DODO",
+   "gecko_id": "dodo",
+   "address": "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd",
+   "chains": [
+    "BSC",
+    "Ethereum",
+    "Aurora",
+    "Polygon",
+    "Arbitrum",
+    "Boba",
+    "Defi Oracle Meta",
+    "Avalanche",
+    "OP Mainnet",
+    "Base"
+   ]
+  },
+  "YB": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 3603,
+   "total1y": 3898244,
+   "annualized1y": 4460373.228840126,
+   "totalAllTime": 3898244,
+   "slug": "yield-basis",
+   "name": "Yield Basis",
+   "gecko_id": "yield-basis",
+   "address": "0x01791f726b4103694969820be083196cc7c045ff",
+   "chains": [
+    "Ethereum"
+   ]
+  },
+  "JTO": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 0,
+   "total1y": 0,
+   "annualized1y": null,
+   "totalAllTime": 0,
+   "slug": "jito",
+   "name": "Jito",
+   "gecko_id": "jito-governance-token",
+   "address": "solana:jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL",
+   "chains": [
+    "Solana"
+   ]
+  },
+  "ETHFI": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 0,
+   "total1y": 9312506,
+   "annualized1y": 9312506,
+   "totalAllTime": 16808974,
+   "slug": "ether.fi",
+   "name": "ether.fi",
+   "gecko_id": "ether-fi",
+   "address": "0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb",
+   "chains": [
+    "Ethereum",
+    "Scroll",
+    "OP Mainnet"
+   ]
+  },
+  "AAVE": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 0,
+   "total1y": 17858554,
+   "annualized1y": 17858554,
+   "totalAllTime": 42944371,
+   "slug": "aave",
+   "name": "Aave",
+   "gecko_id": "aave",
+   "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+   "chains": [
+    "Ethereum",
+    "Polygon",
+    "Avalanche",
+    "Fantom",
+    "Arbitrum",
+    "OP Mainnet",
+    "Metis",
+    "Base",
+    "Gnosis",
+    "BSC",
+    "Scroll",
+    "ZKsync Era",
+    "Linea",
+    "Celo",
+    "Sonic",
+    "Soneium",
+    "Plasma",
+    "Mantle",
+    "MegaETH",
+    "X Layer",
+    "Monad",
+    "Arc"
+   ]
+  },
+  "GEOD": {
+   "total24h": 21991,
+   "total48hto24h": 31071,
+   "total7d": 140283,
+   "total30d": 736015,
+   "total1y": 7595490,
+   "annualized1y": 7595490,
+   "totalAllTime": 11191126,
+   "slug": "geodnet",
+   "name": "Geodnet",
+   "gecko_id": "geodnet",
+   "address": "polygon:0xac0f66379a6d7801d7726d5a943356a172549adb",
+   "chains": [
+    "Polygon",
+    "Solana"
+   ]
+  },
+  "USUAL": {
+   "total24h": 765,
+   "total48hto24h": 24390,
+   "total7d": 54852,
+   "total30d": 117895,
+   "total1y": 824767.7399999999,
+   "annualized1y": 824767.7399999999,
+   "totalAllTime": 13372761.32,
+   "slug": "usual",
+   "name": "Usual",
+   "gecko_id": "usual",
+   "address": "0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E",
+   "chains": [
+    "Ethereum"
+   ]
+  },
+  "DBR": {
+   "total24h": 17480,
+   "total48hto24h": 17737,
+   "total7d": 90912,
+   "total30d": 415172,
+   "total1y": 6799596,
+   "annualized1y": 6799596,
+   "totalAllTime": 11766469,
+   "slug": "debridge",
+   "name": "deBridge",
+   "gecko_id": "debridge",
+   "address": "solana:DBRiDgJAMsM95moTzJs7M9LnkGErpbv9v6CUR1DXnUu5",
+   "chains": [
+    "OP Mainnet",
+    "BSC",
+    "Ethereum",
+    "Linea",
+    "Avalanche",
+    "Polygon",
+    "Solana",
+    "Arbitrum",
+    "Base",
+    "Fantom",
+    "Neon",
+    "Gnosis",
+    "Metis",
+    "Sonic",
+    "Cronos zkEVM",
+    "Abstract",
+    "Berachain",
+    "Data Network",
+    "Hyperliquid L1",
+    "Zircuit",
+    "Flow",
+    "BOB",
+    "Mantle",
+    "Plume Mainnet",
+    "Sophon",
+    "Sei",
+    "Tron",
+    "Plasma",
+    "Injective",
+    "Monad",
+    "Cronos"
+   ]
+  },
+  "EDGE": {
+   "total24h": 20518,
+   "total48hto24h": 21144,
+   "total7d": 145426,
+   "total30d": 613194,
+   "total1y": 47436814,
+   "annualized1y": 87446652.07070707,
+   "totalAllTime": 47436814,
+   "slug": "edgex",
+   "name": "edgeX",
+   "gecko_id": "edgex",
+   "address": "0xb0076de78dc50581770bba1d211ddc0ad4f2a241",
+   "chains": [
+    "EdgeX L1",
+    "Ethereum"
+   ]
+  },
+  "DYDX": {
+   "total24h": 5906,
+   "total48hto24h": 8664,
+   "total7d": 54887,
+   "total30d": 297190,
+   "total1y": 4911640,
+   "annualized1y": 4979857.222222223,
+   "totalAllTime": 64347458,
+   "slug": "dydx",
+   "name": "dYdX",
+   "gecko_id": "dydx-chain",
+   "address": "0x92d6c1e31e14520e676a687f0a93788b716beff5",
+   "chains": [
+    "Ethereum",
+    "DYdX"
+   ]
+  },
+  "LINK": {
+   "total24h": 0,
+   "total48hto24h": 1108693,
+   "total7d": 1108693,
+   "total30d": 5460235,
+   "total1y": 58820818,
+   "annualized1y": 58820818,
+   "totalAllTime": 70201182,
+   "slug": "chainlink",
+   "name": "Chainlink",
+   "gecko_id": "chainlink",
+   "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+   "chains": [
+    "BSC",
+    "OP Mainnet",
+    "Ethereum",
+    "Avalanche",
+    "Polygon",
+    "Arbitrum"
+   ]
+  },
+  "ZRO": {
+   "total24h": 0,
+   "total48hto24h": 0,
+   "total7d": 0,
+   "total30d": 0,
+   "total1y": 3391193,
+   "annualized1y": 3567105.028818444,
+   "totalAllTime": 3391193,
+   "slug": "layerzero",
+   "name": "LayerZero",
+   "gecko_id": "layerzero",
+   "address": "ethereum:0x6985884c4392d348587b19cb9eaaf157f13271cd",
+   "chains": [
+    "Fantom",
+    "CORE",
+    "Kaia",
+    "Harmony",
+    "Aurora",
+    "Linea",
+    "Scroll",
+    "OP Mainnet",
+    "Avalanche",
+    "Polygon zkEVM",
+    "Arbitrum",
+    "Ethereum",
+    "Polygon",
+    "Base",
+    "BSC",
+    "Mantle",
+    "Celo",
+    "Blast",
+    "Fraxtal",
+    "X Layer",
+    "Bitlayer",
+    "Mode",
+    "Merlin",
+    "BOB",
+    "Taiko",
+    "ZkLink Nova",
+    "Tron",
+    "Zircuit",
+    "Flare",
+    "Swellchain",
+    "Ink",
+    "Sonic",
+    "Sophon",
+    "Soneium",
+    "Abstract",
+    "Berachain",
+    "Unichain",
+    "Data Network",
+    "Hemi",
+    "Monad",
+    "Katana",
+    "Plume Mainnet",
+    "Plasma",
+    "MegaETH",
+    "Stable",
+    "Arc"
+   ]
+  },
+  "VVV": {
+   "total24h": 21492,
+   "total48hto24h": 23007,
+   "total7d": 145589,
+   "total30d": 953886,
+   "total1y": 3669749.4299999997,
+   "annualized1y": 4279420.261821086,
+   "totalAllTime": 3691241.4299999997,
+   "slug": "venice",
+   "name": "Venice",
+   "gecko_id": "venice-token",
+   "address": "base:0xacfe6019ed1a7dc6f7b508c02d1b04ec88cc21bf",
+   "chains": [
+    "Base"
+   ]
+  }
+ },
+ "rev": {
+  "CC": {
+   "total24h": 1734855,
+   "total7d": 12159293,
+   "total30d": 48857312,
+   "total1y": 613513201
+  },
+  "PONS": {
+   "total24h": 76545,
+   "total7d": 501216,
+   "total30d": 6374730,
+   "total1y": 35747657
+  },
+  "UNI": {
+   "total24h": 292171,
+   "total7d": 1705732,
+   "total30d": 9560145,
+   "total1y": 57513463
+  },
+  "STONK": {
+   "total24h": 185176,
+   "total7d": 1054233,
+   "total30d": 20799605,
+   "total1y": 35214465
+  },
+  "CAKE": {
+   "total24h": 121268.53,
+   "total7d": 834945.7000000001,
+   "total30d": 4913471.72,
+   "total1y": 67562588.25999995
+  },
+  "ASTER": null,
+  "JUP": {
+   "total24h": 73414.14,
+   "total7d": 836355.5800000001,
+   "total30d": 5166438.199999999,
+   "total1y": 77010458.62999995
+  },
+  "SKY": {
+   "total24h": 451090,
+   "total7d": 3100474,
+   "total30d": 13496075,
+   "total1y": 198973527
+  },
+  "LIT": {
+   "total24h": 183367,
+   "total7d": 1206850,
+   "total30d": 4903812,
+   "total1y": 64312888
+  },
+  "RAY": {
+   "total24h": 75331,
+   "total7d": 467034,
+   "total30d": 5336893,
+   "total1y": 26634507
+  },
+  "ORE": {
+   "total24h": 110927,
+   "total7d": 959587,
+   "total30d": 3422266,
+   "total1y": 42573692
+  },
+  "ETH": {
+   "total24h": 52394,
+   "total7d": 530983,
+   "total30d": 6509810,
+   "total1y": 49900299
+  },
+  "HYPE": {
+   "total24h": 2422551,
+   "total7d": 16156354,
+   "total30d": 71048901,
+   "total1y": 691415915
+  },
+  "PUMP": {
+   "total24h": 2117120,
+   "total7d": 14938831,
+   "total30d": 68027622,
+   "total1y": 484565321
+  },
+  "TRX": {
+   "total24h": 956285,
+   "total7d": 5841965,
+   "total30d": 23916676,
+   "total1y": 341290727
+  },
+  "AERO": {
+   "total24h": 245438,
+   "total7d": 1902793,
+   "total30d": 8040222,
+   "total1y": 88047436
+  },
+  "SOL": {
+   "total24h": 114102,
+   "total7d": 798671,
+   "total30d": 3386461,
+   "total1y": 27192543
+  },
+  "BNB": {
+   "total24h": 52369,
+   "total7d": 279460,
+   "total30d": 1678157,
+   "total1y": 17647703
+  },
+  "SPK": {
+   "total24h": -41442,
+   "total7d": 73301,
+   "total30d": 889831,
+   "total1y": 9737475
+  },
+  "NEAR": {
+   "total24h": 45044,
+   "total7d": 569792,
+   "total30d": 2466183,
+   "total1y": 8373902.05
+  },
+  "CVX": {
+   "total24h": 2728,
+   "total7d": 376987,
+   "total30d": 929200,
+   "total1y": 12962542
+  },
+  "PENDLE": {
+   "total24h": 25871,
+   "total7d": 139133,
+   "total30d": 485027,
+   "total1y": 14778389
+  },
+  "ORCA": {
+   "total24h": 26782,
+   "total7d": 207018,
+   "total30d": 1219691,
+   "total1y": 8237664
+  },
+  "RAIL": {
+   "total24h": 11180,
+   "total7d": 72484,
+   "total30d": 385675,
+   "total1y": 4186835
+  },
+  "XVS": {
+   "total24h": 3826.24,
+   "total7d": 29018.879999999997,
+   "total30d": 644321.0399999997,
+   "total1y": 3701543.6399999973
+  },
+  "INJ": {
+   "total24h": 8050,
+   "total7d": 56282,
+   "total30d": 237024,
+   "total1y": 3570622
+  },
+  "VVS": {
+   "total24h": 2469,
+   "total7d": 25875,
+   "total30d": 71029.93,
+   "total1y": 578509
+  },
+  "DODO": {
+   "total24h": 1067,
+   "total7d": 8741,
+   "total30d": 37532,
+   "total1y": 856368
+  },
+  "BONK": {
+   "total24h": 21193.73,
+   "total7d": 195055.62000000002,
+   "total30d": 4667194.300000002,
+   "total1y": 17916408.259999998
+  },
+  "YB": {
+   "total24h": 0,
+   "total7d": 0,
+   "total30d": 3603,
+   "total1y": 3898244
+  },
+  "CRV": {
+   "total24h": 13941,
+   "total7d": 569880,
+   "total30d": 1899971,
+   "total1y": 27708732.009999998
+  },
+  "VELO": {
+   "total24h": 13907.48,
+   "total7d": 109467.41,
+   "total30d": 419525.20999999996,
+   "total1y": 5494955.65
+  },
+  "JTO": {
+   "total24h": 22724,
+   "total7d": 205430,
+   "total30d": 784522,
+   "total1y": 8719259
+  },
+  "ETHFI": {
+   "total24h": 125520,
+   "total7d": 851314,
+   "total30d": 3811858,
+   "total1y": 44477509
+  },
+  "SYRUP": {
+   "total24h": 30078,
+   "total7d": 214177,
+   "total30d": 1335514,
+   "total1y": 14201134.01
+  },
+  "DBR": {
+   "total24h": 12149,
+   "total7d": 117734,
+   "total30d": 530364,
+   "total1y": 7024422
+  },
+  "EDGE": {
+   "total24h": 59282,
+   "total7d": 418780,
+   "total30d": 2330968,
+   "total1y": 174828094
+  },
+  "MPLX": {
+   "total24h": 1000,
+   "total7d": 25885,
+   "total30d": 178378,
+   "total1y": 4988162
+  },
+  "DEEP": {
+   "total24h": -148,
+   "total7d": 1993,
+   "total30d": 17060,
+   "total1y": 143742
+  },
+  "DYDX": {
+   "total24h": 5906,
+   "total7d": 54887,
+   "total30d": 297190,
+   "total1y": 4911640
+  },
+  "LINK": {
+   "total24h": 0,
+   "total7d": 1108693,
+   "total30d": 5460235,
+   "total1y": 58820818
+  },
+  "ZRO": {
+   "total24h": 0,
+   "total7d": 0,
+   "total30d": 0,
+   "total1y": 3391193
+  },
+  "VVV": {
+   "total24h": 21492,
+   "total7d": 145589,
+   "total30d": 953886,
+   "total1y": 3669749.4299999997
+  },
+  "AAVE": {
+   "total24h": 147493,
+   "total7d": 1217108,
+   "total30d": 5038087,
+   "total1y": 88629641.43
+  },
+  "GEOD": {
+   "total24h": 27489,
+   "total7d": 175352,
+   "total30d": 920019,
+   "total1y": 9494374
+  },
+  "USUAL": {
+   "total24h": 6073,
+   "total7d": 93013,
+   "total30d": 299025,
+   "total1y": 8933263
+  }
+ },
+ "fees": {
+  "AERO": {
+   "total24h": 364108,
+   "total7d": 2740827,
+   "total30d": 12045861,
+   "total1y": 124861748
+  },
+  "UNI": {
+   "total24h": 2353512.2,
+   "total7d": 19496087.56,
+   "total30d": 120302739.09,
+   "total1y": 946994961.6199998
+  },
+  "STONK": {
+   "total24h": 197519,
+   "total7d": 1173915,
+   "total30d": 23901636,
+   "total1y": 39694840
+  },
+  "PONS": {
+   "total24h": 539606,
+   "total7d": 3403721,
+   "total30d": 42157001,
+   "total1y": 196695013
+  },
+  "CC": {
+   "total24h": 1734855,
+   "total7d": 12159293,
+   "total30d": 48857312,
+   "total1y": 613513201
+  },
+  "SKY": {
+   "total24h": 962077,
+   "total7d": 6780077,
+   "total30d": 27855205,
+   "total1y": 392048733
+  },
+  "LIT": {
+   "total24h": 210658,
+   "total7d": 1431283,
+   "total30d": 5935024,
+   "total1y": 82558049
+  },
+  "RAY": {
+   "total24h": 490565,
+   "total7d": 2973517,
+   "total30d": 32182173,
+   "total1y": 170738713
+  },
+  "HYPE": {
+   "total24h": 3141571,
+   "total7d": 20363468,
+   "total30d": 88227183,
+   "total1y": 908816462.6899998
+  },
+  "PUMP": {
+   "total24h": 5786282,
+   "total7d": 40939799,
+   "total30d": 195618669,
+   "total1y": 1217308483
+  },
+  "TRX": {
+   "total24h": 956285,
+   "total7d": 5841965,
+   "total30d": 23916676,
+   "total1y": 341290727
+  },
+  "ORE": {
+   "total24h": 110927,
+   "total7d": 959587,
+   "total30d": 3422266,
+   "total1y": 42573692
+  },
+  "SOL": {
+   "total24h": 774564,
+   "total7d": 5453521,
+   "total30d": 28240488,
+   "total1y": 238462768
+  },
+  "CAKE": {
+   "total24h": 360727.76,
+   "total7d": 2511667.6399999997,
+   "total30d": 14862181.57,
+   "total1y": 200804070.5199999
+  },
+  "BNB": {
+   "total24h": 523695,
+   "total7d": 2794612,
+   "total30d": 16781590,
+   "total1y": 176477032
+  },
+  "ASTER": {
+   "total24h": 145874,
+   "total7d": 1009432,
+   "total30d": 4868994,
+   "total1y": 207781646
+  },
+  "JUP": {
+   "total24h": 275234.14,
+   "total7d": 3521519.5799999996,
+   "total30d": 17463077.43,
+   "total1y": 250774280.34
+  },
+  "BONK": {
+   "total24h": 38048,
+   "total7d": 338339,
+   "total30d": 7908330.890000001,
+   "total1y": 30426063.72
+  },
+  "SPK": {
+   "total24h": 623295,
+   "total7d": 4751962,
+   "total30d": 19222697,
+   "total1y": 189053282
+  },
+  "NEAR": {
+   "total24h": 9475,
+   "total7d": 1195416,
+   "total30d": 7977561,
+   "total1y": 52517953
+  },
+  "CVX": {
+   "total24h": 16538,
+   "total7d": 720180,
+   "total30d": 2390816,
+   "total1y": 31175994
+  },
+  "CRV": {
+   "total24h": 80911,
+   "total7d": 1070053.13,
+   "total30d": 3914944.9600000004,
+   "total1y": 59439310.51999998
+  },
+  "PENDLE": {
+   "total24h": 26220,
+   "total7d": 141018,
+   "total30d": 492252,
+   "total1y": 15079004
+  },
+  "ETH": {
+   "total24h": 258357,
+   "total7d": 2547567,
+   "total30d": 18279174,
+   "total1y": 180509201
+  },
+  "VELO": {
+   "total24h": 14354.48,
+   "total7d": 112077.41,
+   "total30d": 431654.20999999996,
+   "total1y": 5530355.65
+  },
+  "ORCA": {
+   "total24h": 206018,
+   "total7d": 1592435,
+   "total30d": 9382223,
+   "total1y": 67094946
+  },
+  "RAIL": {
+   "total24h": 11180,
+   "total7d": 72484,
+   "total30d": 385675,
+   "total1y": 4186835
+  },
+  "INJ": {
+   "total24h": 8050,
+   "total7d": 56282,
+   "total30d": 237024,
+   "total1y": 3570622
+  },
+  "XVS": {
+   "total24h": 29685.04,
+   "total7d": 215784.04,
+   "total30d": 1446100.04,
+   "total1y": 16668296.04
+  },
+  "VVS": {
+   "total24h": 9021,
+   "total7d": 88271,
+   "total30d": 231156,
+   "total1y": 1804229
+  },
+  "MPLX": {
+   "total24h": 1000,
+   "total7d": 25885,
+   "total30d": 178378,
+   "total1y": 4988162
+  },
+  "DEEP": {
+   "total24h": 898,
+   "total7d": 9017,
+   "total30d": 38455,
+   "total1y": 272821
+  },
+  "DODO": {
+   "total24h": 5336,
+   "total7d": 43719,
+   "total30d": 187730,
+   "total1y": 4282157
+  },
+  "YB": {
+   "total24h": -4068,
+   "total7d": -66369,
+   "total30d": -76618,
+   "total1y": 21419800
+  },
+  "JTO": {
+   "total24h": 319676,
+   "total7d": 2419676,
+   "total30d": 11771611,
+   "total1y": 139777875
+  },
+  "GEOD": {
+   "total24h": 27489,
+   "total7d": 175352,
+   "total30d": 920019,
+   "total1y": 9494374
+  },
+  "AAVE": {
+   "total24h": 1166967,
+   "total7d": 8749188,
+   "total30d": 38472717,
+   "total1y": 685258184.26
+  },
+  "USUAL": {
+   "total24h": 6339,
+   "total7d": 95030,
+   "total30d": 307966,
+   "total1y": 11981920
+  },
+  "DBR": {
+   "total24h": 12149,
+   "total7d": 117734,
+   "total30d": 530364,
+   "total1y": 7024422
+  },
+  "EDGE": {
+   "total24h": 82404,
+   "total7d": 586781,
+   "total30d": 3216134,
+   "total1y": 254800252
+  },
+  "LINK": {
+   "total24h": 3980,
+   "total7d": 1112785,
+   "total30d": 5540829,
+   "total1y": 62600156
+  },
+  "ZRO": {
+   "total24h": 7202,
+   "total7d": 56247,
+   "total30d": 293455,
+   "total1y": 2132524.6
+  },
+  "VVV": {
+   "total24h": 21492,
+   "total7d": 145589,
+   "total30d": 953886,
+   "total1y": 3669749.4299999997
+  },
+  "SYRUP": {
+   "total24h": 182153,
+   "total7d": 1648014,
+   "total30d": 9011730,
+   "total1y": 110096072.05
+  },
+  "ETHFI": {
+   "total24h": 358900,
+   "total7d": 2719001,
+   "total30d": 12387301,
+   "total1y": 186746932
+  },
+  "DYDX": {
+   "total24h": 5906,
+   "total7d": 54887,
+   "total30d": 297190,
+   "total1y": 4911640
+  }
+ },
+ "price": {
+  "HYPE": 79.65894866413034,
+  "CC": 0.10324111724173698,
+  "TRX": 0.3358718909154959,
+  "PUMP": 0.004600336667279968,
+  "UNI": 7.325776915375238,
+  "AERO": 0.9028022974331081,
+  "PONS": 0.3165079862450331,
+  "STONK": 0.10456545375528035,
+  "CAKE": 2.1743498850962832,
+  "ASTER": 0.708476205810595,
+  "SKY": 0.07120199957505814,
+  "JUP": 0.3012528696988002,
+  "LIT": 3.220227286332903,
+  "ETH": 2436.6636031220783,
+  "RAY": 1.8311300319424004,
+  "ORE": 114.9137154054972,
+  "SOL": 104.74544212145332,
+  "BNB": 720.5969276352171,
+  "BONK": 3.034184532640967e-06,
+  "SPK": 0.019993595195551033,
+  "NEAR": 5.18347576821607,
+  "CRV": 0.34233475768004856,
+  "CVX": 1.9400126099962234,
+  "PENDLE": 2.1120933869116327,
+  "VELO": 0.03971605189133016,
+  "ORCA": 1.89320288658248,
+  "RAIL": 2.5909522682793886,
+  "INJ": 8.759969411622619,
+  "XVS": 3.0207892269696277,
+  "SYRUP": 0.20750826287741467,
+  "MPLX": 0.04981629235260706,
+  "VVS": 9.321860415251096e-07,
+  "DEEP": 0.021404076376413315,
+  "DODO": 0.02092018595237893,
+  "YB": 0.06760063712370805,
+  "JTO": 0.46469354175530037,
+  "ETHFI": 0.6864843264142619,
+  "AAVE": 155.67158281997925,
+  "GEOD": 0.2545226637149412,
+  "USUAL": 0.010637332702003548,
+  "DBR": 0.01929938053259743,
+  "EDGE": 0.30157014444761276,
+  "DYDX": 0.12210839164095683,
+  "LINK": 12.209788152523135,
+  "ZRO": 1.9417181984788987,
+  "VVV": 23.20301046926519
+ },
+ "price_meta": {
+  "HYPE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:hyperliquid",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "CC": {
+   "source": "llama:coingecko",
+   "key": "coingecko:canton-network",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "TRX": {
+   "source": "llama:coingecko",
+   "key": "coingecko:tron",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "PUMP": {
+   "source": "llama:coingecko",
+   "key": "coingecko:pump-fun",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "UNI": {
+   "source": "llama:coingecko",
+   "key": "coingecko:uniswap",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "AERO": {
+   "source": "llama:coingecko",
+   "key": "coingecko:aerodrome-finance",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "PONS": {
+   "source": "llama:coingecko",
+   "key": "coingecko:pons",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "STONK": {
+   "source": "llama:coingecko",
+   "key": "coingecko:stonk-3",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "CAKE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:pancakeswap-token",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "ASTER": {
+   "source": "llama:coingecko",
+   "key": "coingecko:aster-2",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "SKY": {
+   "source": "llama:coingecko",
+   "key": "coingecko:sky",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "JUP": {
+   "source": "llama:coingecko",
+   "key": "coingecko:jupiter-exchange-solana",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "LIT": {
+   "source": "llama:coingecko",
+   "key": "coingecko:lighter",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "ETH": {
+   "source": "llama:coingecko",
+   "key": "coingecko:ethereum",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "RAY": {
+   "source": "llama:coingecko",
+   "key": "coingecko:raydium",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "ORE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:ore",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "SOL": {
+   "source": "llama:coingecko",
+   "key": "coingecko:solana",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "BNB": {
+   "source": "llama:coingecko",
+   "key": "coingecko:binancecoin",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "BONK": {
+   "source": "llama:coingecko",
+   "key": "coingecko:bonk",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "SPK": {
+   "source": "llama:coingecko",
+   "key": "coingecko:spark-2",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "NEAR": {
+   "source": "llama:coingecko",
+   "key": "coingecko:near",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "CRV": {
+   "source": "llama:coingecko",
+   "key": "coingecko:curve-dao-token",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "CVX": {
+   "source": "llama:coingecko",
+   "key": "coingecko:convex-finance",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "PENDLE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:pendle",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "VELO": {
+   "source": "llama:coingecko",
+   "key": "coingecko:velodrome-finance",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "ORCA": {
+   "source": "llama:coingecko",
+   "key": "coingecko:orca",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "RAIL": {
+   "source": "llama:coingecko",
+   "key": "coingecko:railgun",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "INJ": {
+   "source": "llama:coingecko",
+   "key": "coingecko:injective-protocol",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "XVS": {
+   "source": "llama:coingecko",
+   "key": "coingecko:venus",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "SYRUP": {
+   "source": "llama:coingecko",
+   "key": "coingecko:syrup",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "MPLX": {
+   "source": "llama:coingecko",
+   "key": "coingecko:metaplex",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "VVS": {
+   "source": "llama:coingecko",
+   "key": "coingecko:vvs-finance",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "DEEP": {
+   "source": "llama:coingecko",
+   "key": "coingecko:deep",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "DODO": {
+   "source": "llama:coingecko",
+   "key": "coingecko:dodo",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "YB": {
+   "source": "llama:coingecko",
+   "key": "coingecko:yield-basis",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "JTO": {
+   "source": "llama:coingecko",
+   "key": "coingecko:jito-governance-token",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "ETHFI": {
+   "source": "llama:coingecko",
+   "key": "coingecko:ether-fi",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  },
+  "AAVE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:aave",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "GEOD": {
+   "source": "llama:coingecko",
+   "key": "coingecko:geodnet",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "USUAL": {
+   "source": "llama:coingecko",
+   "key": "coingecko:usual",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "DBR": {
+   "source": "llama:coingecko",
+   "key": "coingecko:debridge",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "EDGE": {
+   "source": "llama:coingecko",
+   "key": "coingecko:edgex",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "DYDX": {
+   "source": "llama:coingecko",
+   "key": "coingecko:dydx-chain",
+   "timestamp": 1792234375,
+   "confidence": 0.99
+  },
+  "LINK": {
+   "source": "llama:coingecko",
+   "key": "coingecko:chainlink",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "ZRO": {
+   "source": "llama:coingecko",
+   "key": "coingecko:layerzero",
+   "timestamp": 1792235149,
+   "confidence": 0.99
+  },
+  "VVV": {
+   "source": "llama:coingecko",
+   "key": "coingecko:venice-token",
+   "timestamp": 1792234624,
+   "confidence": 0.99
+  }
+ },
+ "failures": [
+  {
+   "t": "DODO",
+   "kind": "hr",
+   "slug": "dodo",
+   "reason": "total30d null (응답 200, 최근 30일 기록 없음 또는 어댑터 정지)"
+  },
+  {
+   "t": "ASTER",
+   "kind": "rev",
+   "slug": "aster",
+   "reason": "400 Bad Request <https://api.llama.fi/summary/fees/aster?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true>"
+  }
+ ]
+}
