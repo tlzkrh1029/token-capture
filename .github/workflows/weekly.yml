@@ -1,8 +1,9 @@
 name: tokencapture-weekly
 on:
   schedule:
-    - cron: "17 9 * * 6"        # 토요일 09:17 UTC = 18:17 KST. 정각(:00)은 GitHub 혼잡으로 지연·누락이 잦아 피한다
-    - cron: "2 10 * * 6"        # 토요일 10:02 UTC = 19:02 KST 보충 실행. 오늘 스냅샷이 이미 커밋돼 있으면 건너뛴다
+    - cron: "17 9 * * 6"        # 토요일 09:17 UTC = 18:17 KST 본 실행. 정각(:00)은 GitHub 혼잡으로 지연·누락이 잦아 피한다
+    - cron: "47 9 * * 6"        # 토요일 09:47 UTC = 18:47 KST 보충 실행. 오늘 스냅샷이 이미 커밋돼 있으면 건너뛴다
+    - cron: "23 */6 * * *"      # [임시 탐침] 예약 등록이 살아 있는지 확인용. 수집하지 않고 바로 끝난다. 확인되면 지운다
   workflow_dispatch:            # 수동 실행. 오늘 스냅샷이 이미 있으면 건너뛰므로, 다시 수집하려면 force 를 켠다
     inputs:
       force:
@@ -13,21 +14,30 @@ permissions:
   contents: write
 concurrency:
   group: tokencapture-weekly
-  cancel-in-progress: false
+  cancel-in-progress: false     # 돌고 있는 실행은 끊지 않는다. 뒤따르는 실행은 check 단계에서 건너뛴다
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04       # ubuntu-latest 가 2026-10-19 부터 26.04 로 단계 전환되므로 11-19 까지 고정한다. 그 뒤 ubuntu-latest 로 되돌린다
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}   # 실행이 만들어진 시점의 sha 가 아니라 체크아웃 시점의 브랜치 끝을 받는다
       - name: check
         id: check
         env:
           FORCE: ${{ inputs.force }}
+          TRIGGER: ${{ github.event_name }} ${{ github.event.schedule }}
         run: |
-          today=$(date -u +%F)
-          if [ -f "data/snapshots/${today}.json" ] && [ "$FORCE" != "true" ]; then
+          echo "trigger: ${TRIGGER}"
+          if [ "${{ github.event.schedule }}" = "23 */6 * * *" ]; then
+            echo "::notice::probe ok $(date -u +%FT%TZ)"
             echo "done=true" >> "$GITHUB_OUTPUT"
-            echo "오늘(${today}) 스냅샷이 이미 커밋돼 있어 건너뜁니다 (force 입력으로 다시 실행할 수 있습니다)"
+            exit 0
+          fi
+          today=$(date -u +%F)
+          if [ "$FORCE" != "true" ] && [ -f "data/snapshots/${today}.json" ]; then
+            echo "done=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::오늘(${today}) 스냅샷이 이미 커밋돼 있어 건너뜁니다 (trigger: ${TRIGGER}; force 입력으로 다시 실행할 수 있습니다)"
           else
             echo "done=false" >> "$GITHUB_OUTPUT"
           fi
@@ -45,8 +55,18 @@ jobs:
       - name: commit
         if: steps.check.outputs.done != 'true'
         run: |
+          today=$(date -u +%F)
           git config user.name "tokencapture-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data/
-          git commit -m "weekly snapshot $(date -u +%F)" || echo "no changes"
-          git push
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "weekly snapshot ${today}"
+          git push || {
+            git fetch --depth=1 origin "$GITHUB_REF_NAME"
+            if git cat-file -e "FETCH_HEAD:data/snapshots/${today}.json" 2>/dev/null; then
+              echo "::notice::다른 실행이 먼저 오늘 스냅샷을 푸시했으므로 이번 결과는 버립니다"
+              exit 0
+            fi
+            echo "::error::push 실패 (원격이 앞서 있음)"
+            exit 1
+          }
