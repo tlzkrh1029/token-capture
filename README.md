@@ -8,7 +8,7 @@
 ## 구조
 
 ```
-GitHub Actions (.github/workflows/weekly.yml, 토요일 09:17 UTC = 18:17 KST, 보충 실행 09:47 UTC = 18:47 KST, Claude 사용량 0)
+GitHub Actions (.github/workflows/weekly.yml, 토요일 06:17 UTC = 15:17 KST, 보충 실행 07:47 UTC = 16:47 KST, Claude 사용량 0)
   scripts/fetch.py  ──▶ api.llama.fi(귀속액) · coins.llama.fi(가격) 직접 호출 → data/raw/YYYY-MM-DD.json
   scripts/score.py  ──▶ data/universe.json 으로 채점 → data/snapshots/YYYY-MM-DD.json, data/latest.json, data/history.csv
   commit            ──▶ data/ 를 저장소에 커밋
@@ -100,7 +100,7 @@ python scripts/fetch.py --date 2026-10-10 && python scripts/score.py --date 2026
 
 ### 매주
 
-워크플로가 토요일 18:17 KST 에 돌고, 18:47 KST 에 보충 실행이 한 번 더 예약되어 있다. 보충 실행은 오늘 스냅샷이 이미 커밋돼 있으면 `check` 단계에서 건너뛴다. 2026-10-17 부터 6시간마다 도는 탐침 cron(`23 */6 * * *`)은 예약 등록이 살아 있는지 확인하는 임시 항목으로, 수집하지 않고 바로 끝나며 확인이 끝나면 지운다. 2026-08 이후 GitHub 예약 스케줄러가 실행을 아예 만들지 않는 사례가 여럿 보고되어 있고 그 경우 보충 cron 도 소용이 없으므로, 그때는 브리지나 사람이 Run workflow(workflow_dispatch)로 돌리는 것이 유일한 우회책이다. 정각 예약은 GitHub 혼잡으로 지연되거나 통째로 빠질 수 있어(2026-10-17 첫 예약 실행이 기록 없이 빠졌다) 분 값을 정각에서 비켜 두었다. 실패 이메일이 오면 Actions 로그의 `[fetch] 실패` 줄을 본다. 재실행은 Run workflow(`force` 켜기). 같은 날 두 번 돌아도 같은 파일을 덮어쓰므로 중복 데이터 점은 생기지 않는다. 브리지(토 19:30 KST)가 "GitHub 쪽이 이번 주 실행을 못 했다"고 알리면 Run workflow 로 수동 실행한 뒤 브리지를 다시 실행한다.
+워크플로가 토요일 15:17 KST 에 돌고, 16:47 KST 에 보충 실행이 한 번 더 예약되어 있다. 보충 실행은 오늘 스냅샷이 이미 커밋돼 있으면 `check` 단계에서 건너뛴다. 2026-10-17~19 에 6시간 간격 탐침 cron 으로 재 본 결과 예약 실행은 등록되어 있었지만 예정 시각보다 2시간 20분에서 5시간까지 늦게 생성됐다(GitHub 쪽 지연). 그래서 19:30 KST 브리지가 읽기 전에 끝나도록 실행 시각을 오후로 앞당겼다. 2026-08 이후 GitHub 예약 스케줄러가 실행을 아예 만들지 않는 사례도 보고되어 있고 그 경우 보충 cron 도 소용이 없으므로, 그때는 브리지나 사람이 Run workflow(workflow_dispatch)로 돌리는 것이 유일한 우회책이다. 정각 예약은 GitHub 혼잡으로 지연되거나 통째로 빠질 수 있어(2026-10-17 첫 예약 실행이 기록 없이 빠졌다) 분 값을 정각에서 비켜 두었다. 실패 이메일이 오면 Actions 로그의 `[fetch] 실패` 줄을 본다. 재실행은 Run workflow(`force` 켜기). 같은 날 두 번 돌아도 같은 파일을 덮어쓰므로 중복 데이터 점은 생기지 않는다. 브리지(토 19:30 KST)가 "GitHub 쪽이 이번 주 실행을 못 했다"고 알리면 Run workflow 로 수동 실행한 뒤 브리지를 다시 실행한다.
 
 ### 격주 리서치 (11-3절, Claude 가 수행)
 

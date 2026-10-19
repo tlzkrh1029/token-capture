@@ -1,9 +1,8 @@
 name: tokencapture-weekly
 on:
   schedule:
-    - cron: "17 9 * * 6"        # 토요일 09:17 UTC = 18:17 KST 본 실행. 정각(:00)은 GitHub 혼잡으로 지연·누락이 잦아 피한다
-    - cron: "47 9 * * 6"        # 토요일 09:47 UTC = 18:47 KST 보충 실행. 오늘 스냅샷이 이미 커밋돼 있으면 건너뛴다
-    - cron: "23 */6 * * *"      # [임시 탐침] 예약 등록이 살아 있는지 확인용. 수집하지 않고 바로 끝난다. 확인되면 지운다
+    - cron: "17 6 * * 6"        # 토요일 06:17 UTC = 15:17 KST 본 실행. 2026-10 GitHub 예약 실행이 2~5시간 늦게 생성되는 것을 관측해 19:30 KST 브리지보다 넉넉히 앞당겼다. 정각(:00)은 혼잡으로 피한다
+    - cron: "47 7 * * 6"        # 토요일 07:47 UTC = 16:47 KST 보충 실행. 오늘 스냅샷이 이미 커밋돼 있으면 건너뛴다
   workflow_dispatch:            # 수동 실행. 오늘 스냅샷이 이미 있으면 건너뛰므로, 다시 수집하려면 force 를 켠다
     inputs:
       force:
@@ -29,11 +28,6 @@ jobs:
           TRIGGER: ${{ github.event_name }} ${{ github.event.schedule }}
         run: |
           echo "trigger: ${TRIGGER}"
-          if [ "${{ github.event.schedule }}" = "23 */6 * * *" ]; then
-            echo "::notice::probe ok $(date -u +%FT%TZ)"
-            echo "done=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
           today=$(date -u +%F)
           if [ "$FORCE" != "true" ] && [ -f "data/snapshots/${today}.json" ]; then
             echo "done=true" >> "$GITHUB_OUTPUT"
